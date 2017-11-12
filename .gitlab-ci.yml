@@ -7,28 +7,23 @@ services:
   - docker:dind
 
 stages:
-  - build
   - test
+  - build
   - cleanup
 
-build:
-  stage: build
-  script:
-    - apk add --update python py-pip python-dev && pip install docker-compose
-    - docker version
-    - docker-compose version
-    - docker info
-    - docker-compose up -d
+# docker-compose does not come with the image normally, so lets add it
+before_script:
+  - apk add --update python py-pip python-dev && pip install docker-compose
+  - docker version
+  - docker-compose version
+  - docker info
 
-lint:
-  stage: test
-  script:
-    - docker-compose run web npm run lint
 test_front_end:
   stage: test
   script:
     - docker-compose run web npm run lint
     - docker-compose run web npm run test
+
 test_scraper:
   stage: test
   script:
@@ -38,3 +33,8 @@ cleanup:
   stage: cleanup
   script:
     - docker-compose down
+
+build:
+  stage: build
+  script:
+    - docker-compose build
