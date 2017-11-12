@@ -6,21 +6,35 @@ variables:
 services:
 - docker:dind
 
-before_script:
-  - apk add --update python py-pip python-dev && pip install docker-compose
-  - docker version
-  - docker-compose version
-  - docker info
-  - docker-compose up -d
-lint:
+stage:
+  - build
+  - test
+  - cleanup
+
+build:
+  stage: build
   script:
-    - npm run lint
+    - apk add --update python py-pip python-dev && pip install docker-compose
+    - docker version
+    - docker-compose version
+    - docker info
+    - docker-compose up -d
+
+lint:
+  stage: test
+  script:
+    - docker-compose run web npm run lint
 test_front_end:
+  stage: test
   script:
     - docker-compose run web npm run lint
     - docker-compose run web npm run test
 test_scraper:
+  stage: test
   script:
     - docker-compose run scraper pytest
-after_script:
-  - docker-compose down
+
+cleanup:
+  stage: cleanup
+  script:
+    - docker-compose down
