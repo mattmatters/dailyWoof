@@ -1,0 +1,23 @@
+image: docker:latest
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+services:
+- docker:dind
+
+before_script:
+  - docker info
+  - docker-compose up --build
+lint:
+  script:
+    - npm run lint
+test_front_end:
+  script:
+    - docker-compose run web npm run lint
+    - docker-compose run web npm run test
+test_scraper:
+  script:
+    -docker-compose run scraper pytest
+after_script:
+  - docker-compose down
