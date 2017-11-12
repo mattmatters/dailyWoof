@@ -7,10 +7,11 @@ services:
 - docker:dind
 
 before_script:
-  - apt-get update
-  - apt-get install -y docker-compose
+  - apk add --update python py-pip python-dev && pip install docker-compose
+  - docker version
+  - docker-compose version
   - docker info
-  - docker-compose up --build
+  - docker-compose up -d
 lint:
   script:
     - npm run lint
@@ -20,6 +21,6 @@ test_front_end:
     - docker-compose run web npm run test
 test_scraper:
   script:
-    -docker-compose run scraper pytest
+    - docker-compose run scraper pytest
 after_script:
   - docker-compose down
