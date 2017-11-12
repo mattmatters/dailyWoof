@@ -4,9 +4,9 @@ variables:
   DOCKER_DRIVER: overlay2
 
 services:
-- docker:dind
+  - docker:dind
 
-stage:
+stages:
   - build
   - test
   - cleanup
