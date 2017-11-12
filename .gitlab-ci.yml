@@ -7,6 +7,8 @@ services:
 - docker:dind
 
 before_script:
+  - apt-get update
+  - apt-get install -y docker-compose
   - docker info
   - docker-compose up --build
 lint:
