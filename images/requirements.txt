@@ -1,2 +1,4 @@
 imgurpython
 redis
+Pillow
+face_recognition
