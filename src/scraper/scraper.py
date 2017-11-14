@@ -46,14 +46,14 @@ def getOgDetails(header):
 
     This is incredibly useful as just about every website has them
     """
-    date = header.find_element_by_xpath('//meta[contains(@name, "pubdate")]')
     title = header.find_element_by_xpath('//meta[contains(@property, "og:title")]')
     desc = header.find_element_by_xpath('//meta[contains(@name, "description")]')
+    img = header.find_element_by_xpath('//meta[contains(@property, "og:image")]')
 
     return {
-        'date': date.get_attribute('content') if date else '2017-01-01',
         'title': title.get_attribute('content') if title else 'Unknown',
-        'description': desc.get_attribute('content') if desc else 'description'
+        'description': desc.get_attribute('content') if desc else 'description',
+        'image': img.get_attribute('content') if img else ''
     }
 
 def get_story(browser, story_url, xpath):
@@ -71,9 +71,9 @@ def get_story(browser, story_url, xpath):
 
     return {
         'url': story_url,
-        'date': details['date'],
         'title': details['title'],
         'desc': details['description'],
+        'image': details['image'],
         'story': story
     }
 
