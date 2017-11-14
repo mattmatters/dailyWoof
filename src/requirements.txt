@@ -2,6 +2,7 @@ selenium
 nltk
 textblob
 numpy
-imgurpython
 redis
+
 pytest
+pylint
