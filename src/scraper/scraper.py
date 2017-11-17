@@ -8,6 +8,7 @@ from re import search
 # Selenium and automating a real web browser on the web is a bit finicky
 # So a lot of the try catch statements are protecting errors
 
+
 def get_links(browser, url):
     """
     Main scraping method of obtaining links.
@@ -20,6 +21,7 @@ def get_links(browser, url):
         return []
 
     return browser.find_elements_by_xpath("//a[@href]")
+
 
 def extract_links(tags, regex):
     """
@@ -35,10 +37,12 @@ def extract_links(tags, regex):
 
     return [link for link in href if search(regex, link)]
 
+
 def get_story_body(body, xpath):
     """Uses xpath to get all story text matching it"""
     story = body.find_elements_by_css_selector(xpath)
     return "\n".join([x.text for x in story if len(x.text) > 0])
+
 
 def getOgDetails(header):
     """
@@ -46,15 +50,20 @@ def getOgDetails(header):
 
     This is incredibly useful as just about every website has them
     """
-    title = header.find_element_by_xpath('//meta[contains(@property, "og:title")]')
-    desc = header.find_element_by_xpath('//meta[contains(@name, "description")]')
-    img = header.find_element_by_xpath('//meta[contains(@property, "og:image")]')
+    title = header.find_element_by_xpath(
+        '//meta[contains(@property, "og:title")]')
+    desc = header.find_element_by_xpath(
+        '//meta[contains(@name, "description")]')
+    img = header.find_element_by_xpath(
+        '//meta[contains(@property, "og:image")]')
 
     return {
         'title': title.get_attribute('content') if title else 'Unknown',
-        'description': desc.get_attribute('content') if desc else 'description',
+        'description': desc.get_attribute('content')
+        if desc else 'description',
         'image': img.get_attribute('content') if img else ''
     }
+
 
 def get_story(browser, story_url, xpath):
     """
@@ -76,6 +85,7 @@ def get_story(browser, story_url, xpath):
         'image': details['image'],
         'story': story
     }
+
 
 def scrape_site(browser, details):
     a_tags = get_links(browser, details['url'])
