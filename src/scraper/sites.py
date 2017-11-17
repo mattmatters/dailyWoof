@@ -16,26 +16,25 @@ sites = {
     },
     'bbc': {
         'url': 'http://www.bbc.com/',
-        'link_regex': r'https?:\/\/www.bbc.com\/news\/*',
+        'link_regex': r'https?:\/\/(www.)?bbc.com\/news\/*',
         'story_xpath': '.story-body__inner'
     },
     'nyTimes': {
         'url': 'https://www.nytimes.com/',
-        'link_regex': r'https?:\/\/www.nytimes.com\/20*',
+        'link_regex': r'https?:\/\/(www.)?nytimes.com\/20*',
         'story_xpath': '.story-body-text'
     },
     'guardian': {
         'url': 'https://www.theguardian.com',
-        'link_regex': r'https?:\/\/www.theguardian.com\/us-news\/*',
+        'link_regex': r'https?:\/\/(www.)?theguardian.com\/us-news\/*',
         'story_xpath': '.content__article-body'
     },
     'eOnline': {
         'url': 'http://wwww.eonline.com',
-        'link_regex': r'https?:\/\/www.eonline.com\/news\/*',
+        'link_regex': r'https?:\/\/(www.)?eonline.com\/news\/*',
         'story_xpath': '.post-content'
     },
 }
-
 """
 Ones that have been ruled out
 
