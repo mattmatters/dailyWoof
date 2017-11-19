@@ -44,7 +44,7 @@ def get_story_body(body, xpath):
     return "\n".join([x.text for x in story if len(x.text) > 0])
 
 
-def getOgDetails(header):
+def get_details(header):
     """
     Extracts the search engine crawler information
 
@@ -75,7 +75,7 @@ def get_story(browser, story_url, xpath):
     """
     browser.get(story_url)
     browser.implicitly_wait(2)
-    details = getOgDetails(browser.find_element_by_css_selector('head'))
+    details = get_details(browser.find_element_by_css_selector('head'))
     story = get_story_body(browser.find_element_by_css_selector('body'), xpath)
 
     return {
