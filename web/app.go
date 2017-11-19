@@ -1,8 +1,9 @@
 package main
 
+import "encoding/json"
+
 import "github.com/gin-gonic/gin"
 import "github.com/go-redis/redis"
-import "encoding/json"
 
 type CommonWord struct {
 	Word  string
@@ -27,19 +28,29 @@ type Story struct {
 }
 
 func main() {
+	// Initialize app
 	r := gin.Default()
+
+	// Configure Middleware
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+
+	// Static Files to serve
 	r.Static("/static", "./dist/static")
 	r.LoadHTMLFiles("dist/index.html")
+
+	// Redis Client
 	client := redis.NewClient(&redis.Options{
 		Addr:     "redis:6379",
 		Password: "",
 		DB:       0,
 	})
 
+	// Routes
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html", nil)
 	})
-	r.GET("/images", func(c *gin.Context) {
+	r.GET("/stories", func(c *gin.Context) {
 		img, err := client.Keys("*").Result()
 		c.JSON(200, gin.H{
 			"message": img,
@@ -50,7 +61,7 @@ func main() {
 		key, err := client.RandomKey().Result()
 
 		if err != nil {
-			c.JSON(200, gin.H{
+			c.JSON(500, gin.H{
 				"message": err,
 			})
 
