@@ -1,31 +1,14 @@
 package main
 
-import "encoding/json"
-
-import "github.com/gin-gonic/gin"
-import "github.com/go-redis/redis"
-
-type CommonWord struct {
-	Word  string
-	Count int
-}
-
-type FmtStory struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Story       string `json:"story"`
-	Image       string `json:"image"`
-}
-
-type Story struct {
-	URL         string       `json:"url"`
-	Title       string       `json:"title"`
-	Description string       `json:"desc"`
-	Story       string       `json:"story"`
-	CommonNouns []CommonWord `json:"commonNouns"`
-	CommonAdjs  []CommonWord `json:"commonAdj"`
-	Names       []string     `json:"names"`
-}
+import (
+	"encoding/json"
+	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
+	"net/http"
+	"fmt"
+	    "encoding/gob"
+    "bytes"
+)
 
 func main() {
 	// Initialize app
@@ -46,19 +29,38 @@ func main() {
 		DB:       0,
 	})
 
+	// Redis scripts
+	RandVal := redis.NewScript(`
+		local key = redis.call("RANDOMKEY")
+		return redis.call("GET", key)
+	`)
+	RandVals := redis.NewScript(`
+		local values = {}
+		local valsToGet = ARGV[1]
+		for i = 1, valsToGet do
+		    local key = redis.call("RANDOMKEY")
+		    local value = redis.call("GET", key)
+		    values[i] = value
+		end
+		return values
+	`)
+
 	// Routes
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html", nil)
+		c.HTML(http.StatusOK, "index.html", nil)
 	})
-	r.GET("/stories", func(c *gin.Context) {
+	r.GET("/stuff", func(c *gin.Context) {
 		img, err := client.Keys("*").Result()
-		c.JSON(200, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": img,
 			"other":   err,
 		})
 	})
+	// We will be testing which version is more efficient, multiple queries that
+	// asynchronously get processed, or a bulk query and then concurrently
+	// processing the result
 	r.GET("/stories", func(c *gin.Context) {
-		key, err := client.RandomKey().Result()
+		value, err := RandVal.Run(client, nil, nil).Result()
 
 		if err != nil {
 			c.JSON(500, gin.H{
@@ -67,22 +69,54 @@ func main() {
 
 			return
 		}
-
-		value, _ := client.Get(key).Result()
-
+		fmt.Println(value)
 		res := Story{}
-		json.Unmarshal([]byte(value), &res)
+		test, ok := value.(string)
 
-		res2 := FmtStory{}
+		if ok != true {
+			c.JSON(500, gin.H{
+				"message": ok,
+			})
+			return
+		}
 
-		res2.Title = res.Title
-		res2.Description = res.Description
-		res2.Story = res.Story
-		res2.Image = "https://media.giphy.com/media/l41m0CPz6UCnaUmxG/giphy.gif"
+		json.Unmarshal([]byte(test), &res)
 
-		c.JSON(200, gin.H{
+		res2 := FmtStory{
+			Title: res.Title,
+			Description: res.Description,
+			Story: res.Story,
+			Image: res.Image,
+		}
+
+		c.JSON(http.StatusOK, gin.H{
 			"data": []FmtStory{res2},
 		})
 	})
+	r.GET("/stories2", func(c *gin.Context) {
+		stuff, err := RandVals.Run(client, nil, 10).Result()
+		if err != nil {
+			c.JSON(500, gin.H{
+				"message": err,
+			})
+
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message": stuff,
+		})
+	})
+
 	r.Run()
+}
+
+func GetBytes(key interface{}) ([]byte, error) {
+    var buf bytes.Buffer
+    enc := gob.NewEncoder(&buf)
+    err := enc.Encode(key)
+    if err != nil {
+	return nil, err
+    }
+    return buf.Bytes(), nil
 }
