@@ -17,7 +17,6 @@ Give the scraper several minutes for stories to start populating then head to ht
 ## Todo
 - Figure out the random image situation
 - Implement the actual word replacement
-- Get redis to respect the configuration
 - Deploy
 - Set up continous deployment
 - Golang tests
@@ -26,7 +25,20 @@ Give the scraper several minutes for stories to start populating then head to ht
 - Better development environment for Javascript/Vue coding
 - Logo
 - Scraper logging
-- Tests for all sites being scraped
 - Restart PhantomJS on error
-- Python linter
 
+## Stuff I've learnt
+This is has been an awesome project that has required me to touch a lot of stuff.
+There is almost no piece of technology or methodology that I have used before in this repository.
+
+Here's an incomplete list, mostly for my benefit.
+
++ Golang
++ Python
++ Web Scraping
++ Redis
++ Lua Scripting
++ Docker
++ Docker-compose
++ Vue
++ Natural Language Processing
