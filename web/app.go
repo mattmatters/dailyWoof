@@ -5,9 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"net/http"
-	"fmt"
-	    "encoding/gob"
-    "bytes"
 )
 
 func main() {
@@ -45,56 +42,70 @@ func main() {
 		return values
 	`)
 
+	// Dictionary
+	dic, dicErr := loadDictionary("./dictionary")
+
+	if dicErr != nil {
+		panic(dicErr)
+	}
+
 	// Routes
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
-	r.GET("/stuff", func(c *gin.Context) {
-		img, err := client.Keys("*").Result()
-		c.JSON(http.StatusOK, gin.H{
-			"message": img,
-			"other":   err,
-		})
-	})
+
 	// We will be testing which version is more efficient, multiple queries that
 	// asynchronously get processed, or a bulk query and then concurrently
 	// processing the result
 	r.GET("/stories", func(c *gin.Context) {
-		value, err := RandVal.Run(client, nil, nil).Result()
+		var stories []FmtStory
 
-		if err != nil {
-			c.JSON(500, gin.H{
-				"message": err,
-			})
+		readingRainbow := make(chan FmtStory)
 
-			return
+		for i := 0; i < 10; i++ {
+			// Get story
+			val, err := RandVal.Run(client, nil, nil).Result()
+
+			if err != nil {
+				c.JSON(500, gin.H{
+					"message": err,
+				})
+
+				return
+			}
+
+			// Assert result
+			castVal, ok := val.(string)
+
+			if ok != true {
+				c.JSON(500, gin.H{
+					"message": ok,
+				})
+				return
+			}
+
+			// Start Concurrency
+			go func() {
+				// Marshal story
+				story := Story{}
+				json.Unmarshal([]byte(castVal), &story)
+
+				// Process it
+				readingRainbow <- NatLangProcess(dic, story)
+			}()
 		}
-		fmt.Println(value)
-		res := Story{}
-		test, ok := value.(string)
 
-		if ok != true {
-			c.JSON(500, gin.H{
-				"message": ok,
-			})
-			return
-		}
-
-		json.Unmarshal([]byte(test), &res)
-
-		res2 := FmtStory{
-			Title: res.Title,
-			Description: res.Description,
-			Story: res.Story,
-			Image: res.Image,
+		// Recieve from channel
+		for j := 0; j < 10; j++ {
+			stories = append(stories, <-readingRainbow)
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"data": []FmtStory{res2},
+			"data": stories,
 		})
 	})
 	r.GET("/stories2", func(c *gin.Context) {
-		stuff, err := RandVals.Run(client, nil, 10).Result()
+		vals, err := RandVals.Run(client, nil, 10).Result()
 		if err != nil {
 			c.JSON(500, gin.H{
 				"message": err,
@@ -104,19 +115,9 @@ func main() {
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"message": stuff,
+			"message": vals,
 		})
 	})
 
 	r.Run()
-}
-
-func GetBytes(key interface{}) ([]byte, error) {
-    var buf bytes.Buffer
-    enc := gob.NewEncoder(&buf)
-    err := enc.Encode(key)
-    if err != nil {
-	return nil, err
-    }
-    return buf.Bytes(), nil
 }

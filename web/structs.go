@@ -1,5 +1,11 @@
 package main
 
+type Dictionary struct {
+	Names      []Name
+	Nouns      []Noun
+	Adjectives []Adjective
+}
+
 type Noun struct {
 	Singular string
 	Plural   string
