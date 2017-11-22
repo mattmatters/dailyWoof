@@ -6,39 +6,14 @@
 
 Dogs have taken over the news.
 
+Text and image parser for deciphering front page news stories into a format easily parsed by :dog:.
+
 ## Running
+
+_For a developement build._
+
+To get a sense for the structure of the application, check out the compose file. The entire app can be spun up locally with this command.
 
 ```bash
 docker-compose up --build
 ```
-
-Give the scraper several minutes for stories to start populating then head to http://localhost:8080
-
-## Todo
-- Figure out the random image situation
-- Implement the actual word replacement
-- Deploy
-- Set up continous deployment
-- Golang tests
-- Semi-functional UI
-- Domain name
-- Better development environment for Javascript/Vue coding
-- Logo
-- Scraper logging
-- Restart PhantomJS on error
-
-## Stuff I've learnt
-This is has been an awesome project that has required me to touch a lot of stuff.
-There is almost no piece of technology or methodology that I have used before in this repository.
-
-Here's an incomplete list, mostly for my benefit.
-
-+ Golang
-+ Python
-+ Web Scraping
-+ Redis
-+ Lua Scripting
-+ Docker
-+ Docker-compose
-+ Vue
-+ Natural Language Processing
