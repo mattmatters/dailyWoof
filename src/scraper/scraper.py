@@ -1,41 +1,34 @@
 """
 Main library functions.
-
 Give it a valid Selenium Driver connected to a browser as the browser argument.
 """
 from re import search
+from scraper.utility import set_story, append_nlp
 
 # Selenium and automating a real web browser on the web is a bit finicky
 # So a lot of the try catch statements are protecting errors
 
+DEFAULT_TITLE = ''
+DEFAULT_DESC = ''
+DEFAULT_IMAGE_URL = ''
 
-def get_links(browser, url):
-    """
-    Main scraping method of obtaining links.
-
-    Scrapes sites for all href's on the given url
-    """
+def get_links(browser, url, regex):
+    """Get all front page news links"""
     try:
         browser.get(url)
     except Exception:
         return []
 
-    return browser.find_elements_by_xpath("//a[@href]")
-
-
-def extract_links(tags, regex):
-    """
-    Takes a list of a tags and extracts all urls that match the given regex
-    """
-    href = []
+    tags = browser.find_elements_by_xpath("//a[@href]")
+    links = []
 
     for a_tag in tags:
         try:
-            href.append(a_tag.get_attribute('href'))
-        except Exception as e:
+            links.append(a_tag.get_attribute('href'))
+        except Exception:
             continue
 
-    return [link for link in href if search(regex, link)]
+    return [link for link in links if search(regex, link)]
 
 
 def get_story_body(body, xpath):
@@ -47,7 +40,6 @@ def get_story_body(body, xpath):
 def get_details(header):
     """
     Extracts the search engine crawler information
-
     This is incredibly useful as just about every website has them
     """
     title = header.find_element_by_xpath(
@@ -58,10 +50,9 @@ def get_details(header):
         '//meta[contains(@property, "og:image")]')
 
     return {
-        'title': title.get_attribute('content') if title else 'Unknown',
-        'description': desc.get_attribute('content')
-        if desc else 'description',
-        'image': img.get_attribute('content') if img else ''
+        'title': title.get_attribute('content') if title else DEFAULT_TITLE,
+        'description': desc.get_attribute('content') if desc else DEFAULT_DESC,
+        'image': img.get_attribute('content') if img else DEFAULT_IMAGE_URL
     }
 
 
@@ -87,15 +78,17 @@ def get_story(browser, story_url, xpath):
     }
 
 
-def scrape_site(browser, details):
-    a_tags = get_links(browser, details['url'])
-    links = extract_links(a_tags, details['link_regex'])
-    stories = []
+def scrape_site(browser, db_client, details):
+    links = get_links(browser, details['url'], details['link_regex'])
 
     for link in links:
-        try:
-            stories.append(get_story(browser, link, details['story_xpath']))
-        except Exception as e:
-            continue
+        if not db_client.exists(link):
+            try:
+                story = get_story(browser, link, details['story_xpath'])
+            except Exception:
+                continue
 
-    return stories
+            story = append_nlp(story)
+            set_story(db_client, story)
+
+    return

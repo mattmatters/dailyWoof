@@ -8,9 +8,8 @@ import random
 from redis import Redis
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from scraper import scraper
+from scraper.scraper import scrape_site
 from scraper.sites import sites
-from scraper.utility import have_story, set_story, append_nlp
 
 # Config
 
@@ -35,6 +34,4 @@ BROWSER.implicitly_wait(2)
 while True:
     random.shuffle(WORK)
     for job in WORK:
-        stories = [append_nlp(x) for x in scraper.scrape_site(BROWSER, job) if not have_story(REDIS, x['url'])]
-        for x in stories:
-            set_story(REDIS, x)
+        scrape_site(BROWSER, REDIS, job)

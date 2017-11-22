@@ -24,8 +24,3 @@ def set_story(db_client, info):
     db_client.pipeline().set(url, info).expire(url, 3600000).execute()
 
     return
-
-
-def have_story(db_client, url):
-    """Quick check to see if the story is already in redis"""
-    return db_client.exists(url)

@@ -12,9 +12,7 @@ browser.implicitly_wait(2)
 
 # Tests that our regex works
 def test_cnn_regex():
-    stories = scraper.get_links(browser, sites['cnn']['url'])
-    assert len(stories) > 0
-    stories = scraper.extract_links(stories, sites['cnn']['link_regex'])
+    stories = scraper.get_links(browser, sites['cnn']['url'], sites['cnn']['link_regex'])
     assert len(stories) > 0
 
 
@@ -30,9 +28,7 @@ def test_cnn_story():
 
 # Tests that our regex works
 def test_bbc_regex():
-    stories = scraper.get_links(browser, sites['bbc']['url'])
-    assert len(stories) > 0
-    stories = scraper.extract_links(stories, sites['bbc']['link_regex'])
+    stories = scraper.get_links(browser, sites['bbc']['url'], sites['bbc']['link_regex'])
     assert len(stories) > 0
 
 
@@ -47,9 +43,7 @@ def test_bbc_story():
 
 # Tests that our regex works
 def test_nyTimes_regex():
-    stories = scraper.get_links(browser, sites['nyTimes']['url'])
-    assert len(stories) > 0
-    stories = scraper.extract_links(stories, sites['nyTimes']['link_regex'])
+    stories = scraper.get_links(browser, sites['nyTimes']['url'], sites['nyTimes']['link_regex'])
     assert len(stories) > 0
 
 
@@ -65,9 +59,7 @@ def test_nyTimes_story():
 
 # Tests that our regex works
 def test_guardian_regex():
-    stories = scraper.get_links(browser, sites['guardian']['url'])
-    assert len(stories) > 0
-    stories = scraper.extract_links(stories, sites['guardian']['link_regex'])
+    stories = scraper.get_links(browser, sites['guardian']['url'], sites['guardian']['link_regex'])
     assert len(stories) > 0
 
 
@@ -83,9 +75,7 @@ def test_guardian_story():
 
 # Tests that our regex works
 def test_eOnline_regex():
-    stories = scraper.get_links(browser, sites['eOnline']['url'])
-    assert len(stories) > 0
-    stories = scraper.extract_links(stories, sites['eOnline']['link_regex'])
+    stories = scraper.get_links(browser, sites['eOnline']['url'], sites['eOnline']['link_regex'])
     assert len(stories) > 0
 
 
