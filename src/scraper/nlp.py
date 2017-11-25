@@ -36,11 +36,12 @@ def fmt_noun(tpl):
 
 def cmn_adj(tag_txt):
     """List of tuples of adjectives and count of appearance"""
-    adjectives = [word.lower() for (word, pos) in tag_txt if pos == 'JJ']
+    adjectives = [word.lower() for (word, pos) in tag_txt if pos == 'JJ' and len(word) > 2]
     return list(map(fmt_adj, FreqDist(adjectives).most_common()))
 
 
 def fmt_adj(tpl):
+    """Formats to object instead of tuple"""
     return {'word': tpl[0], 'count': tpl[1]}
 
 
