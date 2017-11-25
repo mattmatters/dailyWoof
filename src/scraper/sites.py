@@ -11,12 +11,12 @@ The story_xpath is a bit more driver specific, but it's  a css selector to get t
 sites = {
     'cnn': {
         'url': 'https://www.cnn.com',
-        'link_regex': r'https?:\/\/(www.)?cnn.com\/20*',
+        'link_regex': r'https?:\/\/(www.)?cnn.com\/20\d*',
         'story_xpath': '.zn-body__paragraph'
     },
     'bbc': {
         'url': 'http://www.bbc.com/',
-        'link_regex': r'https?:\/\/(www.)?bbc.com\/news\/*',
+        'link_regex': r'https?:\/\/(www.)?bbc.com\/news\/.*-\d*',
         'story_xpath': '.story-body__inner'
     },
     'nyTimes': {
@@ -31,7 +31,7 @@ sites = {
     },
     'eOnline': {
         'url': 'http://wwww.eonline.com',
-        'link_regex': r'https?:\/\/(www.)?eonline.com\/news\/*',
+        'link_regex': r'https?:\/\/(www.)?eonline.com\/news\/.*',
         'story_xpath': '.post-content'
     },
 }
