@@ -19,6 +19,10 @@ func matchWords(dic Dictionary, story Story) map[string]string {
 	bible := make(map[string]string)
 
 	for _, noun := range story.CommonNouns {
+		if noun.Count <= 1 {
+			continue
+		}
+
 		i := random(0, len(dic.Nouns))
 		word := dic.Nouns[i]
 
@@ -27,6 +31,10 @@ func matchWords(dic Dictionary, story Story) map[string]string {
 	}
 
 	for _, adjective := range story.CommonAdjs {
+		if adjective.Count <= 1 {
+			continue
+		}
+
 		i := random(0, len(dic.Adjectives))
 		word := dic.Adjectives[i]
 		bible[adjective.Word] = word.Word
@@ -43,19 +51,14 @@ func matchWords(dic Dictionary, story Story) map[string]string {
 // Main regex
 func ReplaceWords(bible map[string]string, story Story) FmtStory {
 	var regWords []string
-
 	// Only want the matching values
-	for str, str2 := range bible {
-		fmt.Println(str + " " + str2)
-		regWords = append(regWords, str)
+	for str, _ := range bible {
+		regWords = append(regWords, regexp.QuoteMeta(str))
 	}
 
 	reg := strings.Join(regWords, "|")
-	fmt.Println(reg)
 	regex := regexp.MustCompile(reg)
-
-	replFunc := func (word string) string {
-		fmt.Println(word)
+	replFunc := func(word string) string {
 		return bible[word]
 	}
 	var retStory FmtStory

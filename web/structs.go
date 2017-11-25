@@ -7,19 +7,18 @@ type Dictionary struct {
 }
 
 type Noun struct {
-	Singular string
-	Plural   string
-	Count    int
+	Singular string `json:"singular"`
+	Plural   string `json:"plural"`
+	Count    int    `json:"count"`
 }
 
 type Adjective struct {
-	Word  string
-	Count int
+	Word  string `json:"word"`
+	Count int    `json:"count"`
 }
 
 type Name struct {
-	Word  string
-	Count int
+	Word string `json:"name"`
 }
 
 type FmtStory struct {

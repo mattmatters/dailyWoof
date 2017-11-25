@@ -11,6 +11,9 @@ def cmn_nouns(tagged_txt):
     for (word, tag) in tagged_txt:
         if tag not in ['NN', 'NNS']:
             continue
+        elif len(word) < 3:
+            # smaller words sneak in sometimes
+            continue
         elif tag == 'NNS':
             word = Word(word).singularize()
         words.append(word.lower())
@@ -24,13 +27,21 @@ def fmt_noun(tpl):
 
     (dog, 2) => (dog, dogs, 2)
     """
-    return (tpl[0], Word(tpl[0]).pluralize(), tpl[1])
+    return {
+        'singular': tpl[0],
+        'plural': Word(tpl[0]).pluralize(),
+        'count': tpl[1]
+    }
 
 
 def cmn_adj(tag_txt):
     """List of tuples of adjectives and count of appearance"""
     adjectives = [word.lower() for (word, pos) in tag_txt if pos == 'JJ']
-    return FreqDist(adjectives).most_common()
+    return list(map(fmt_adj, FreqDist(adjectives).most_common()))
+
+
+def fmt_adj(tpl):
+    return {'word': tpl[0], 'count': tpl[1]}
 
 
 def cmn_names(text):
@@ -41,7 +52,8 @@ def cmn_names(text):
             if hasattr(chunk, 'label') and chunk.label() == 'PERSON':
                 prop_nouns += chunk.leaves()
 
-    return list(set([x[0] for x in prop_nouns]))
+    prop_nouns = list(set([x[0] for x in prop_nouns]))
+    return [{'name': x} for x in prop_nouns]
 
 
 def makeTextBlob(txt):
