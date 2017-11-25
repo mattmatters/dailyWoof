@@ -8,9 +8,7 @@ Dogster
 Doggoton
 Scottsdale
 Woofburn
-Bones
 Spot
-Barks
 Shakespaw
 Pawtrick
 Drool
@@ -28,19 +26,20 @@ Barksalot
 Pawsalot
 Whiskers
 Bailey
-Hannah
 Dawg
 Droolster
 Sleepybutt
 Barktholamew
 Woofium
 Wooflium
-Borf
 Kennedog
 Scrufferson
 Woofster
 Bently
 Mo
+McGee
 Doug
 Dug
 Tucker
+Big Jones
+Fido
