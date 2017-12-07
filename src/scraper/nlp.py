@@ -18,7 +18,7 @@ def cmn_nouns(tagged_txt):
             word = Word(word).singularize()
         words.append(word.lower())
 
-    return list(map(fmt_noun, FreqDist(words).most_common()))
+    return [fmt_noun(x) for x in FreqDist(words).most_common()]
 
 
 def fmt_noun(tpl):
@@ -36,8 +36,8 @@ def fmt_noun(tpl):
 
 def cmn_adj(tag_txt):
     """List of tuples of adjectives and count of appearance"""
-    adjectives = [word.lower() for (word, pos) in tag_txt if pos == 'JJ' and len(word) > 2]
-    return list(map(fmt_adj, FreqDist(adjectives).most_common()))
+    adj = [word.lower() for (word, pos) in tag_txt if pos == 'JJ' and len(word) > 2]
+    return [fmt_adj(x) for x in FreqDist(adj).most_common()]
 
 
 def fmt_adj(tpl):

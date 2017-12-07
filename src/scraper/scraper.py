@@ -88,11 +88,8 @@ def scrape_site(browser, db_client, details):
             except Exception:
                 continue
 
-            # Skip all stories without a body text
-            if not len(story['story']):
-                continue
-
-            story = append_nlp(story)
-            set_story(db_client, story)
+            if len(story['story']):
+                story = append_nlp(story)
+                set_story(db_client, story)
 
     return
