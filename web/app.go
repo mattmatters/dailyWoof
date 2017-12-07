@@ -70,7 +70,6 @@ func main() {
 				c.JSON(500, gin.H{
 					"message": err,
 				})
-
 				return
 			}
 

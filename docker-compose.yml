@@ -17,6 +17,7 @@ services:
       - PORT=8080
     volumes:
       - ./dictionary:/go/src/app/dictionary
+      - web-stuff:/go/src/app/dist
   scraper:
     build: src
     command: python app.py
@@ -46,7 +47,10 @@ services:
       - redis-db:/data
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
-
+  frontend:
+    build: frontend
+    volumes:
+      - web-stuff:/go/src/app/dist
 volumes:
   web-stuff:
   redis-db:
