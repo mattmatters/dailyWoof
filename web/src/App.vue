@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div id="app">
     <LandingPage />
     <Story
@@ -8,11 +8,13 @@
         v-bind:description="story.description"
         v-bind:story="story.story"
     />
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import InfiniteLoading from 'vue-infinite-loading';
 import LandingPage from './components/Landing';
 import Story from './components/Story';
 
@@ -21,6 +23,7 @@ export default {
   components: {
     LandingPage,
     Story,
+    InfiniteLoading,
   },
   data() {
     return {
@@ -34,6 +37,11 @@ export default {
     async getStories() {
       const res = await axios.get('/stories');
       this.stories = this.stories.concat(res.data.data);
+    },
+    async infiniteHandler($state) {
+      const res = await axios.get('/stories');
+      this.stories = this.stories.concat(res.data.data);
+      $state.loaded();
     },
   },
 };
