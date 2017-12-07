@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 	"regexp"
 	"strings"
@@ -57,7 +56,6 @@ func ReplaceWords(bible map[string]string, story Story) FmtStory {
 	}
 
 	reg := "(" + strings.Join(regWords, "|") + ")" + "[ ,'" + regexp.QuoteMeta(".") + "]"
-	fmt.Println(reg)
 	regex := regexp.MustCompile(reg)
 	replFunc := func(word string) string {
 		// Remove the end character
