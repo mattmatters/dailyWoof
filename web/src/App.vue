@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <LandingPage />
-    <button v-on:click="getStories">Get Stories</button>
     <Story
         v-for="story in stories"
         v-bind:image="story.image"
@@ -41,12 +40,12 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+ #app {
+     font-family: 'Avenir', Helvetica, Arial, sans-serif;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+     text-align: center;
+     margin-top: 60px;
+     background-color: #1f2041;
+ }
 </style>
