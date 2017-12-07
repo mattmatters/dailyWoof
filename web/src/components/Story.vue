@@ -46,6 +46,9 @@ export default {
 
  .story-body {
      text-align: left;
+     white-space: pre-wrap;
+     word-wrap: break-word;
+     font-family: inherit;
  }
 
  a {
