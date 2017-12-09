@@ -8,17 +8,17 @@ txt2 = txt2.tags
 
 
 def test_fmtNouns():
-    assert nlp.fmt_noun(('cat', 1)) == ('cat', 'cats', 1)
+    assert nlp.fmt_noun(('cat', 1)) == {'count': 1, 'singular': 'cat', 'plural': 'cats'}
 
 
 def test_cmn_nouns_one():
     cmn_nouns = nlp.cmn_nouns(txt)
 
     assert len(cmn_nouns) == 3
-    assert ('cat', 'cats', 3) in cmn_nouns
+    assert {'singular': 'cat', 'plural': 'cats', 'count': 3} in cmn_nouns
     assert nlp.fmt_noun(('cat', 3)) in cmn_nouns
     assert cmn_nouns == [
-        nlp.fmt_noun(('cat', 3)), ('dog', 'dogs', 2), ('monkey', 'monkeys', 1)
+        nlp.fmt_noun(('cat', 3)), nlp.fmt_noun(('dog', 2)), nlp.fmt_noun(('monkey', 1))
     ]
 
 
@@ -26,7 +26,7 @@ def test_cmn_nouns_two():
     cmn_nouns = nlp.cmn_nouns(txt2)
 
     # known bug that "brown" comes in as a noun
-    assert ('fox', 'foxes', 1) in cmn_nouns
+    assert nlp.fmt_noun(('fox', 1)) in cmn_nouns
     assert nlp.fmt_noun(('fox', 1)) in cmn_nouns
     assert nlp.fmt_noun(('dog', 1)) in cmn_nouns
 
@@ -47,5 +47,5 @@ def test_cmn_adj_one():
 # processing libraries
 def test_cmn_adj_two():
     adj = nlp.cmn_adj(txt2)
-    assert ('quick', 1) in adj
-    assert ('lazy', 1) in adj
+    assert nlp.fmt_adj(('quick', 1)) in adj
+    assert nlp.fmt_adj(('lazy', 1)) in adj

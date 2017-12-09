@@ -74,16 +74,16 @@ def test_guardian_story():
 
 
 # Tests that our regex works
-def test_eOnline_regex():
-    stories = scraper.get_links(browser, sites['eOnline']['url'], sites['eOnline']['link_regex'])
-    assert len(stories) > 0
+# def test_eOnline_regex():
+#     stories = scraper.get_links(browser, sites['eOnline']['url'], sites['eOnline']['link_regex'])
+#     assert len(stories) > 0
 
 
-def test_eOnline_story():
-    story = scraper.get_story(
-        browser,
-        'http://www.eonline.com/news/893550/did-kylie-jenner-have-a-private-baby-shower-all-the-details-on-her-pink-filled-celebration',
-        sites['eOnline']['story_xpath'])
-    assert len(story['title']) > 0
-    assert len(story['desc']) > 0
-    assert len(story['story']) > 0
+# def test_eOnline_story():
+#     story = scraper.get_story(
+#         browser,
+#         'http://www.eonline.com/news/893550/did-kylie-jenner-have-a-private-baby-shower-all-the-details-on-her-pink-filled-celebration',
+#         sites['eOnline']['story_xpath'])
+#     assert len(story['title']) > 0
+#     assert len(story['desc']) > 0
+#     assert len(story['story']) > 0
