@@ -21,8 +21,8 @@ before_script:
 test_front_end:
   stage: test
   script:
-    - docker-compose run web npm run lint
-    - docker-compose run web npm run test
+    - docker-compose run frontend npm run lint
+    - docker-compose run frontend npm run test
 
 test_scraper:
   stage: test
