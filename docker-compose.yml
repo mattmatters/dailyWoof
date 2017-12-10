@@ -5,8 +5,20 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+  redis:
+    image: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-db:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    deploy:
+      restart_policy:
+        condition: on-failure
   web:
     build: web
+    command: ./bin/app
     links:
       - redis
     ports:
@@ -37,17 +49,9 @@ services:
       - redis
     depends_on:
       - redis
-    environment:
-      - IMGUR_ID=__Key_goes_here__
-      - IMGUR_SECRET=__Secret_goes_here__
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-db:/data
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
-    command: redis-server /usr/local/etc/redis/redis.conf
+    deploy:
+      restart_policy:
+        condition: on-failure
   frontend:
     build: frontend
     volumes:
