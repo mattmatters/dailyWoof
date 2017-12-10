@@ -1,4 +1,6 @@
-imgurpython
-redis
-Pillow
-face_recognition
+numpy
+scipy
+scikit-image
+dlib
+tensorflow
+opencv-python
