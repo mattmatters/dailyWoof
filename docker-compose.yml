@@ -1,7 +1,7 @@
 version: "3.1"
 services:
   phantomjs:
-    build: phantomjs
+    image: superpolkadance/phantomjs:1.0
     deploy:
       restart_policy:
         condition: on-failure
