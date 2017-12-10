@@ -19,7 +19,7 @@ services:
       - ./dictionary:/go/src/app/dictionary
       - web-stuff:/go/src/app/dist
   scraper:
-    build: src
+    build: scraper
     command: python app.py
     depends_on:
       - phantomjs
