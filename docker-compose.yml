@@ -1,7 +1,17 @@
 version: "3.1"
 services:
+  messager:
+    image: rabbitmq:3.6
+    hostname: my-rabbit
   phantomjs:
     image: superpolkadance/phantomjs:1.0
+    deploy:
+      restart_policy:
+        condition: on-failure
+  chrome:
+    image: justinribeiro/chrome-headless
+    cap_add:
+      - SYS_ADMIN
     deploy:
       restart_policy:
         condition: on-failure
@@ -14,6 +24,7 @@ services:
       - redis-db:/data
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     deploy:
+      replicas: 1
       restart_policy:
         condition: on-failure
   web:
@@ -38,6 +49,8 @@ services:
       - redis
     links:
       - phantomjs:browser
+      - chrome:browser2
+      - messager
       - redis
     deploy:
       restart_policy:
@@ -47,8 +60,12 @@ services:
     command: python test.py
     links:
       - redis
+      - messager
     depends_on:
       - redis
+    environment:
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     deploy:
       restart_policy:
         condition: on-failure
