@@ -1,4 +1,4 @@
 boto3
 pika
 requests
-face_replace
+face_replace===0.1.11
