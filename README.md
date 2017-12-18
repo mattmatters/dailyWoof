@@ -3,7 +3,9 @@
     <a href="https://gitlab.com/mattmatters/dailyWoof/commits/master"><img alt="pipeline status" src="https://gitlab.com/mattmatters/dailyWoof/badges/master/pipeline.svg" /></a>
     <a href="https://codeclimate.com/github/mattmatters/dailyWoof/maintainability"><img src="https://api.codeclimate.com/v1/badges/6d419e6fb14f95b76067/maintainability" /></a>
 </p>
-
+<p align="center">
+    <a href="https://travis-ci.org/mattmatters/dailyWoof"><img src="https://travis-ci.org/mattmatters/dailyWoof.svg?branch=master"></a>
+</p>
 Dogs have taken over the news.
 
 Text and image parser for deciphering front page news stories into a format easily parsed by :dog:.
