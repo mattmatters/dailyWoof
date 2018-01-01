@@ -3,6 +3,7 @@ nltk
 textblob
 numpy
 redis
+pika
 
 pytest
 pylint
