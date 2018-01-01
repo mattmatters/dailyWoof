@@ -4,6 +4,7 @@ News Scraper App
 Scrape news sites and recieve trending names, nouns, and adjectives.
 """
 import random
+from time import sleep
 
 import pika
 from redis import Redis
@@ -53,9 +54,10 @@ def publish_image(image_url):
         except Exception:
             has_published = False
             retries += 1
+            sleep(5)
+            if retries == 5:
+                raise Exception('Maximum amount of retries reached')
 
-        if retries == 5:
-            raise Exception('Maximum amount of retries reached')
 
 while True:
     random.shuffle(WORK)
@@ -72,3 +74,4 @@ while True:
                 if len(story['story']):
                     story = append_nlp(story)
                     set_story(REDIS, story)
+                    publish_image(story['image'])

@@ -5,6 +5,8 @@ services:
     hostname: my-rabbit
   phantomjs:
     image: superpolkadance/phantomjs:1.0
+    logging:
+      driver: "none"
     deploy:
       restart_policy:
         condition: on-failure
