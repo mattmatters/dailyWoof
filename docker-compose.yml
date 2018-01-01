@@ -57,12 +57,14 @@ services:
         condition: on-failure
   images:
     build: images
-    command: python test.py
+    command: python app.py
     links:
       - redis
       - messager
     depends_on:
       - redis
+    volumes:
+      - ./dictionary:/usr/src/app/cow
     environment:
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
@@ -76,3 +78,5 @@ services:
 volumes:
   web-stuff:
   redis-db:
+networks:
+  redis:

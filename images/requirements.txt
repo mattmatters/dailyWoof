@@ -1,4 +1,9 @@
 boto3
 pika
 requests
-face_replace===0.1.11
+opencv-python
+pillow
+dlib
+scikit-image
+requests
+faceitize
