@@ -10,13 +10,6 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-  chrome:
-    image: justinribeiro/chrome-headless
-    cap_add:
-      - SYS_ADMIN
-    deploy:
-      restart_policy:
-        condition: on-failure
   redis:
     image: redis
     command: redis-server /usr/local/etc/redis/redis.conf
@@ -51,7 +44,6 @@ services:
       - redis
     links:
       - phantomjs:browser
-      - chrome:browser2
       - messager
       - redis
     deploy:
@@ -77,8 +69,16 @@ services:
     build: frontend
     volumes:
       - web-stuff:/go/src/app/dist
+  scraper:
+    build: scraper
+    command: python app.py
+    links:
+      - phantomjs:browser
+      - redis
+      - messager
 volumes:
   web-stuff:
   redis-db:
 networks:
   redis:
+  messager:

@@ -2,6 +2,7 @@
 """This is it folks"""
 
 import re
+import json
 from io import BytesIO
 
 import boto3
@@ -13,7 +14,7 @@ from skimage import io
 from faceitize import replace_faces
 
 # RabbitMQ
-
+QUEUE_NAME = 'images'
 
 # Face Detector Models
 FACE_DETECTOR = dlib.get_frontal_face_detector()
@@ -29,6 +30,11 @@ DMX_IMG_URL = 'https://nyppagesix.files.wordpress.com/2017/07/170714_yang_nyp___
 
 
 # Utility Functions
+def create_queue(channel, name):
+    queue = channel.queue_declare(queue=name)
+    channel.queue_bind(exchange='stories', queue=queue.method.queue)
+
+
 def landmarks_to_tpl(landmarks):
     return [(landmarks.part(i).x, landmarks.part(i).y) for i in range(0, 67)]
 
@@ -46,27 +52,28 @@ def main():
 
 def callback(ch, method, properties, body):
     # Get and load image into memory
-    body = body.decode('utf-8')
+    body = json.loads(body.decode('utf-8'))
+    url = body['image']
+
     try:
-        f = requests.get(body).content
+        f = requests.get(url).content
         img = io.imread(BytesIO(f))
     except Exception as e:
-        print(body + " is an invalid url, skipping")
+        print(url + " is an invalid url, skipping")
         return
-
+    print(url)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = replace_faces(
         img,
         static_img,
         static_landmarks,
         landmark_predictor=LANDMARK_PREDICTOR)
-    name = extract_name(body)[0]
+    name = extract_name(url)[0]
 
     image_type = name.split(".")
     image_type = image_type[len(image_type) - 1]
-    buffer = BytesIO()
+
     buffer = cv2.imencode("." + image_type, img)[1].tostring()
-    # buffer.seek(0)
 
     S3_CLIENT.Bucket(BUCKET_NAME).put_object(Key=name, Body=buffer)
 
@@ -84,5 +91,5 @@ if __name__ == '__main__':
         pika.ConnectionParameters(
             'messager', retry_delay=5, connection_attempts=5))
     CHANNEL = CONNECTION.channel()
-    CHANNEL.queue_declare(queue='images')
+    create_queue(CHANNEL, QUEUE_NAME)
     main()

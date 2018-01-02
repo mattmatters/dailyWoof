@@ -1,77 +1,45 @@
 """
-News Scraper App
+Natural Language Processor
 
-Scrape news sites and recieve trending names, nouns, and adjectives.
+Receives scraped news and identifies common nouns, adjectives, and proper nouns
 """
 import random
+import json
 from time import sleep
 
 import pika
 from redis import Redis
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from scraper.scraper import get_story, get_links
-from scraper.sites import sites
-from scraper.utility import append_nlp, set_story
+from natlang.utility import append_nlp, set_story
 
-# Config
-
-# RabbitMQ
+REDIS = Redis(host='redis', port=6379)
+QUEUE_NAME = 'text'
 CONNECTION = pika.BlockingConnection(
     pika.ConnectionParameters(
         'messager', retry_delay=5, connection_attempts=5))
 CHANNEL = CONNECTION.channel()
-CHANNEL.queue_declare(queue='images')
-
-# Pick any of the predefined sites or roll your own
-WORK = [sites['cnn'], sites['bbc'], sites['nyTimes'], sites['guardian']]
-
-# Basic enivronment configuration
-REDIS = Redis(host='redis', port=6379)
-BROWSER = webdriver.Remote(
-    command_executor='http://browser:8910',
-    desired_capabilities=DesiredCapabilities.PHANTOMJS)
-
-# Application
-BROWSER.implicitly_wait(2)
 
 
-def publish_image(image_url):
-    has_published = False
-    retries = 0
+def create_queue(channel, name):
+    queue = channel.queue_declare(queue=name)
+    channel.queue_bind(exchange='stories', queue=queue.method.queue)
 
-    # http://www.itmaybeahack.com/homepage/iblog/architecture/C551260341/E20081031204203/index.html
-    while not has_published and retries < 5:
-        try:
-            CHANNEL.basic_publish(
-                exchange='',
-                routing_key='images',
-                body=image_url,
-                properties=pika.BasicProperties(
-                    delivery_mode=2,  # make message persistent
-                    content_type='text/plain'))
-            has_published = True
-        except Exception:
-            has_published = False
-            retries += 1
-            sleep(5)
-            if retries == 5:
-                raise Exception('Maximum amount of retries reached')
+def callback(ch, method, properties, body):
+    body = json.loads(body.decode('utf-8'))
+    set_story(REDIS, append_nlp(body))
 
 
-while True:
-    random.shuffle(WORK)
-    for job in WORK:
-        links = get_links(BROWSER, job['url'], job['link_regex'])
+def main():
+    """Subscribe to queue and story processed stories"""
 
-        for link in links:
-            if not REDIS.exists(link):
-                try:
-                    story = get_story(BROWSER, link, job['story_xpath'])
-                except Exception:
-                    continue
+    # Create a queue and bind it to the stories exchange
+    create_queue(CHANNEL, QUEUE_NAME)
 
-                if len(story['story']):
-                    story = append_nlp(story)
-                    set_story(REDIS, story)
-                    publish_image(story['image'])
+    # Start consuming
+    CHANNEL.basic_qos(prefetch_count=1)
+    CHANNEL.basic_consume(callback, queue=QUEUE_NAME, no_ack=True)
+    CHANNEL.start_consuming()
+
+
+if __name__ == '__main__':
+    sleep(10)
+    main()

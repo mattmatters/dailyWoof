@@ -1,8 +1,5 @@
-nltk
-textblob
-numpy
+selenium
 redis
 pika
-
 pytest
 pylint

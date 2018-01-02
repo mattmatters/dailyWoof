@@ -5,7 +5,7 @@ Most of them interact with the provided redis client
 """
 
 import json
-from scraper.nlp import process_txt
+from natlang.nlp import process_txt
 
 
 # Quick Utility functions
