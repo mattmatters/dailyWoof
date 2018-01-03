@@ -14,7 +14,7 @@ Also DMX.
 
 ## Running
 
-_For a developement build._
+_For a development build._
 
 To get a sense for the structure of the application, check out the compose file. The entire app can be spun up locally with this command.
 
