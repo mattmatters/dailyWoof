@@ -55,19 +55,21 @@ def callback(ch, method, properties, body):
     body = json.loads(body.decode('utf-8'))
     url = body['image']
 
+    if url == "" or url == None:
+        return
+
     try:
         f = requests.get(url).content
         img = io.imread(BytesIO(f))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = replace_faces(
+            img,
+            static_img,
+            static_landmarks,
+            landmark_predictor=LANDMARK_PREDICTOR)
     except Exception as e:
-        print(url + " is an invalid url, skipping")
         return
-    print(url)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = replace_faces(
-        img,
-        static_img,
-        static_landmarks,
-        landmark_predictor=LANDMARK_PREDICTOR)
+
     name = extract_name(url)[0]
 
     image_type = name.split(".")
