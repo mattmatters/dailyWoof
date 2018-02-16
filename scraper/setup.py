@@ -1,6 +1,7 @@
-#!/usr/bin/env python
+"""Scraper Setup"""
 
-from distutils.core import setup
+from setuptools import setup
+# from distutils.core import setup
 
 setup(
     name='Bark News Scraper',
@@ -10,4 +11,16 @@ setup(
     author_email='domattthings@gmail.com',
     url='',
     packages=['scraper'],
+    install_requires=[
+        'selenium',
+        'redis',
+        'pika',
+    ],
+    setup_requires=[
+        'pytest-runner',
+    ],
+    tests_require=[
+        'pytest',
+        'pylint',
+    ],
 )
