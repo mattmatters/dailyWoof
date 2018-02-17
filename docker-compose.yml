@@ -67,6 +67,7 @@ services:
         condition: on-failure
   frontend:
     build: frontend
+    command: npm run build
     volumes:
       - web-stuff:/go/src/app/dist
   scraper:

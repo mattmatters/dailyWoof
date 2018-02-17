@@ -5,9 +5,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"net/http"
+	"time"
 )
 
 func main() {
+	time.Sleep(time.Duration(40 * time.Second))
+
 	// Initialize app
 	r := gin.Default()
 
