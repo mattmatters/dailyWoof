@@ -3,9 +3,6 @@
         <img class="small" v-bind:src="image">
         <h3 class="story-title">{{ title }}</h3>
         <p class="description">{{ description }}</p>
-        <button v-if="!showStory" v-on:click="show"> More </button>
-        <p v-if="showStory" class="story-body">{{ story }}</p>
-
     </div>
 </template>
 
@@ -44,18 +41,11 @@ export default {
      color: #ffc857;
  }
 
- .story-body {
-     text-align: left;
-     white-space: pre-wrap;
-     word-wrap: break-word;
-     font-family: inherit;
- }
-
  a {
      color: #196473;
  }
 
  .small {
-     width: 50%;
+     max-width: 20em;
  }
 </style>

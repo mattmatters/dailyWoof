@@ -1,13 +1,15 @@
 <template>
   <div id="app">
     <LandingPage />
-    <Story
-        v-for="story in stories"
-        v-bind:image="story.image"
-        v-bind:title="story.title"
-        v-bind:description="story.description"
-        v-bind:story="story.story"
-    />
+    <div class="stories">
+        <Story
+            v-for="story in stories"
+            v-bind:image="story.image"
+            v-bind:title="story.title"
+            v-bind:description="story.description"
+            v-bind:story="story.story"
+        />
+    </div>
     <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
@@ -55,5 +57,11 @@ export default {
      text-align: center;
      margin-top: 60px;
      background-color: #1f2041;
+ }
+ .stories {
+     display: flex;
+     flex-direction: row;
+     flex-wrap: wrap;
+     justify-content: space-around;
  }
 </style>
