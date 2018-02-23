@@ -36,6 +36,7 @@ services:
     volumes:
       - ./dictionary:/go/src/app/dictionary
       - web-stuff:/go/src/app/dist
+      - ./config:/go/src/app/config
   natlang:
     build: natlang
     command: python app.py
@@ -59,6 +60,7 @@ services:
       - redis
     volumes:
       - ./dictionary:/usr/src/app/cow
+      - ./config:/usr/src/app/config
     environment:
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
