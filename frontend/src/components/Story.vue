@@ -28,7 +28,7 @@ export default {
  .story {
      background-color: #4b3f72;
      border-radius: 1em;
-     padding: 1em;
+     padding: 3em;
      margin: 1em;
  }
 
@@ -46,6 +46,6 @@ export default {
  }
 
  .small {
-     max-width: 20em;
+     max-width: 40em;
  }
 </style>
