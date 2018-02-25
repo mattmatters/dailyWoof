@@ -6,7 +6,6 @@ import (
 	"github.com/go-redis/redis"
 	"net/http"
 	"time"
-	"fmt"
 )
 
 func main() {
