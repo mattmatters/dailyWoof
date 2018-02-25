@@ -1,7 +1,7 @@
 {
-  "name": "duck-digger",
+  "name": "daily-woof",
   "version": "1.0.0",
-  "description": "Dog diggin",
+  "description": "Daily Woof",
   "author": "Matt Lewis <mlewis@c3metrics.com>",
   "private": true,
   "scripts": {
