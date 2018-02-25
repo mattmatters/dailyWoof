@@ -3,6 +3,8 @@ services:
   messager:
     image: rabbitmq:3.7.2
     hostname: my-rabbit
+    logging:
+      driver: "none"
   phantomjs:
     image: superpolkadance/phantomjs:1.0
     logging:
@@ -33,6 +35,7 @@ services:
       - redis
     environment:
       - PORT=8080
+      - BUILD=$BUILD
     volumes:
       - ./dictionary:/go/src/app/dictionary
       - web-stuff:/go/src/app/dist
@@ -70,6 +73,8 @@ services:
     command: npm run build
     volumes:
       - web-stuff:/go/src/app/dist
+    environment:
+      - BUILD=$BUILD
   scraper:
     build: scraper
     command: python app.py
