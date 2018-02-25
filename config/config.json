@@ -7,7 +7,8 @@
         ["dog breeder", "dog breeders"],
         ["jail", "jail"],
         ["misdemeanor", "misdemeanors"],
-        ["dog fight", "dog fights"]
+        ["dog fight", "dog fights"],
+        ["coke", "coke"]
       ],
       "adjectives": [
         "illegal"
@@ -20,10 +21,12 @@
       "name": ["Steve", "Harvey"],
       "nouns": [
         ["teeth", "teeth"],
-        ["price", "prices"]
+        ["price", "prices"],
+        ["family feud", "family feuds"]
       ],
       "adjectives": [
-        "shiny"
+        "shiny",
+        "right"
       ],
       "image": [
         "steve.jpg"
@@ -74,7 +77,8 @@
     "cannon": {
       "name": ["Nick", "Cannon"],
       "nouns": [
-        ["almond", "almonds"]
+        ["almond", "almonds"],
+        ["rapper", "rapper"]
       ],
       "adjectives": [
         "forgettable",
@@ -104,11 +108,13 @@
       "name": ["Amanda", "Bynes"],
       "nouns": [
         ["coke", "coke"],
-        ["drugs", "drugs"]
+        ["drugs", "drugs"],
+        ["demon", "demons"]
       ],
       "adjectives": [
         "drugged out",
-        "all that"
+        "all that",
+        "so crazy"
       ],
       "image": [
         "bynes.jpg"
