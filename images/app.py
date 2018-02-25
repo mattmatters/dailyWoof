@@ -31,7 +31,7 @@ LANDMARK_PREDICTOR = dlib.shape_predictor('./shape_predictor_68_face_landmarks.d
 # S3 Config
 S3_CLIENT = boto3.resource('s3')
 BUCKET_NAME = 'assets.dailywoof.space'
-S3_BASEPATH = "http://assets.dailywoof.space.s3-website-us-east-1.amazonaws.com/"
+S3_BASEPATH = "http://assets.dailywoof.space/"
 
 # Faces to replace
 DMX_IMG_URL = 'https://nyppagesix.files.wordpress.com/2017/07/170714_yang_nyp___manh_fed___dmx_3.jpg'
