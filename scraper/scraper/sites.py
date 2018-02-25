@@ -34,6 +34,16 @@ sites = {
         'link_regex': r'https?:\/\/(www.)?eonline.com\/news\/.*',
         'story_xpath': '.post-content'
     },
+    'yahoo': {
+        'url': 'https://www.yahoo.com/news/',
+        'link_regex': r'https?:\/\/(www.)?yahoo.com\/news\/.*',
+        'story_xpath': '.canvas-text'
+    },
+    'wp': {
+        'url': 'https://www.washingtonpost.com/?reload=false',
+        'link_regex': r'https?:\/\/(www.)?washingtonpost.com/news/.*',
+        'story_xpath': '.article-body'
+    }
 }
 """
 Ones that have been ruled out
