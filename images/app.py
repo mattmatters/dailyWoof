@@ -21,6 +21,7 @@ with open('./config/config.json') as data_file:
 
 # RabbitMQ
 QUEUE_NAME = 'images'
+CONNECTION_PARAMETERS = pika.ConnectionParameters('messager', retry_delay=5, connection_attempts=5)
 
 REDIS = Redis(host='redis', port=6379)
 
@@ -33,17 +34,12 @@ S3_CLIENT = boto3.resource('s3')
 BUCKET_NAME = 'assets.dailywoof.space'
 S3_BASEPATH = "http://assets.dailywoof.space/"
 
-# Faces to replace
-DMX_IMG_URL = 'https://nyppagesix.files.wordpress.com/2017/07/170714_yang_nyp___manh_fed___dmx_3.jpg'
-
-
 # Utility Functions
 def create_queue(channel, name):
     channel.queue_declare(queue=name)
 
 def landmarks_to_tpl(landmarks):
     return [(landmarks.part(i).x, landmarks.part(i).y) for i in range(0, 67)]
-
 
 def extract_name(url):
     """Takes the a url and exracts the images name"""
@@ -59,10 +55,17 @@ def set_story(db_client, info):
 
 
 def main():
-    CHANNEL.basic_qos(prefetch_count=2)
-    CHANNEL.basic_consume(callback, queue='images', no_ack=True)
-    CHANNEL.start_consuming()
+    while True:
+        connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
+        channel = connection.channel()
+        create_queue(channel, QUEUE_NAME)
 
+        channel.basic_qos(prefetch_count=2)
+        channel.basic_consume(callback, queue='images', no_ack=True)
+        try:
+            channel.start_consuming()
+        except pika.exceptions.ConnectionClosed:
+            continue
 
 def callback(ch, method, properties, body):
     # Get and load image into memory
@@ -90,6 +93,11 @@ def callback(ch, method, properties, body):
         f = requests.get(url).content
         img = io.imread(BytesIO(f))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+        # We don't want images without faces in them
+        if len(FACE_DETECTOR(img, 1)) == 0:
+            return
+
         img = replace_faces(
             img,
             static_img,
@@ -114,10 +122,4 @@ def callback(ch, method, properties, body):
 
 if __name__ == '__main__':
     # Load our static image first
-    CONNECTION = pika.BlockingConnection(
-        pika.ConnectionParameters(
-            'messager', retry_delay=5, connection_attempts=5))
-    CHANNEL = CONNECTION.channel()
-    CHANNEL.exchange_declare(exchange='stories', exchange_type='fanout')
-    create_queue(CHANNEL, QUEUE_NAME)
     main()
