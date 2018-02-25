@@ -1,14 +1,15 @@
 {
   "people": {
     "dmx": {
-      "name": ["DMX", "DMX"],
+      "name": ["DMX", "DMX", "Dominic"],
       "nouns": [
         ["rapper", "rappers"],
         ["dog breeder", "dog breeders"],
         ["jail", "jail"],
         ["misdemeanor", "misdemeanors"],
         ["dog fight", "dog fights"],
-        ["coke", "coke"]
+        ["coke", "coke"],
+        ["druuuuuugs", "drrrrrrrruuugs"]
       ],
       "adjectives": [
         "illegal"
@@ -22,11 +23,14 @@
       "nouns": [
         ["teeth", "teeth"],
         ["price", "prices"],
-        ["family feud", "family feuds"]
+        ["family feud", "family feuds"],
+        ["mustache", "mustaches"],
+        ["bald person", "bald people"]
       ],
       "adjectives": [
         "shiny",
-        "right"
+        "right",
+        "bald"
       ],
       "image": [
         "steve.jpg"
@@ -64,7 +68,10 @@
       "nouns": [
         ["jail", "jail"],
         ["tax fraud", "tax fraud"],
-        ["soiree", "soirees"]
+        ["soiree", "soirees"],
+        ["cook", "cooks"],
+        ["fake Oprah", "fake Oprahs"],
+        ["celebrity", "celebrities"]
       ],
       "adjectives": [
         "fraudulent",
@@ -86,22 +93,6 @@
       ],
       "image": [
         "cannon.jpg"
-      ]
-    },
-    "cook": {
-      "name": ["Dane", "Cook"],
-      "nouns": [
-        ["laugh", "laughs"],
-        ["divorce", "divorces"],
-        ["commedian", "comendians"]
-      ],
-      "adjectives": [
-        "unfunny",
-        "round",
-        "sad"
-      ],
-      "image": [
-        "cook.jpg"
       ]
     },
     "bynes": {
