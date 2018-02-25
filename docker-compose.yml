@@ -41,10 +41,8 @@ services:
     build: natlang
     command: python app.py
     depends_on:
-      - phantomjs
       - redis
     links:
-      - phantomjs:browser
       - messager
       - redis
     deploy:
