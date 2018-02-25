@@ -6,9 +6,11 @@ import (
 	"github.com/go-redis/redis"
 	"net/http"
 	"time"
+	"fmt"
 )
 
 func main() {
+	// Wait for other processes to finish before starting
 	time.Sleep(time.Duration(40 * time.Second))
 
 	// Initialize app
@@ -45,11 +47,10 @@ func main() {
 		return values
 	`)
 
-	// Dictionary
-	dic, dicErr := loadDictionary("./dictionary")
+	config, configErr := loadConfig("./config/config.json")
 
-	if dicErr != nil {
-		panic(dicErr)
+	if configErr != nil {
+		panic(configErr)
 	}
 
 	// Routes
@@ -93,7 +94,11 @@ func main() {
 				json.Unmarshal([]byte(castVal), &story)
 
 				// Process it
-				readingRainbow <- NatLangProcess(dic, story)
+				if val, ok := config.People[story.Tag]; ok {
+					readingRainbow <- NatLangProcess(val, story)
+				} else {
+					readingRainbow <- NatLangProcess(config.People["dmx"], story)
+				}
 			}()
 		}
 

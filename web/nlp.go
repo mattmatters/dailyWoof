@@ -9,12 +9,16 @@ import (
 
 // Utility function for random int in range
 func random(min, max int) int {
+	if min == 0 && max == 0 {
+		return 0
+	}
+
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(max-min) + min
 }
 
 // Returns map keyed by original words and replace words
-func matchWords(dic Dictionary, story Story) map[string]string {
+func matchWords(dic PersonConfig, story Story) map[string]string {
 	bible := make(map[string]string)
 
 	for _, noun := range story.CommonNouns {
@@ -25,8 +29,8 @@ func matchWords(dic Dictionary, story Story) map[string]string {
 		i := random(0, len(dic.Nouns))
 		word := dic.Nouns[i]
 
-		bible[noun.Singular] = word.Singular
-		bible[noun.Plural] = word.Plural
+		bible[noun.Singular] = word[0]
+		bible[noun.Plural] = word[1]
 	}
 
 	for _, adjective := range story.CommonAdjs {
@@ -36,12 +40,12 @@ func matchWords(dic Dictionary, story Story) map[string]string {
 
 		i := random(0, len(dic.Adjectives))
 		word := dic.Adjectives[i]
-		bible[adjective.Word] = word.Word
+		bible[adjective.Word] = word
 	}
 
 	for _, name := range story.Names {
-		i := random(0, len(dic.Names))
-		bible[name.Word] = dic.Names[i].Word
+		i := random(0, len(dic.Name))
+		bible[name.Word] = dic.Name[i]
 	}
 
 	return bible
@@ -73,7 +77,7 @@ func ReplaceWords(bible map[string]string, story Story) FmtStory {
 }
 
 // Entrance point
-func NatLangProcess(dic Dictionary, story Story) FmtStory {
+func NatLangProcess(dic PersonConfig, story Story) FmtStory {
 	bible := matchWords(dic, story)
 	return ReplaceWords(bible, story)
 }

@@ -37,4 +37,18 @@ type Story struct {
 	CommonAdjs  []Adjective `json:"commonAdj"`
 	Names       []Name      `json:"names"`
 	Image       string      `json:"image"`
+	Tag         string      `json:"tag"`
 }
+
+type Config struct {
+	People map[string]PersonConfig `json:"people"`
+}
+
+type PersonConfig struct {
+	Name       []string     `json:"name"`
+	Nouns      []ConfigNoun `json:"nouns"`
+	Adjectives []string     `json:"adjectives"`
+	Image      []string     `json:"image"`
+}
+
+type ConfigNoun []string

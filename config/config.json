@@ -1,18 +1,22 @@
 {
-  "dmx": {
-    "names": ["DMX", "DMX"],
-    "nouns": [
-      ["rapper", "rappers"],
-      ["dog breeder", "dog breeders"],
-      ["jail", "jail"],
-      ["misdemeanor", "misdemeanors"],
-      ["dog fight", "dog fights"]
-    ],
-    "adjectives": [
-      "illegal"
-    ]
-  },
-  "harvey": {
+  "people": {
+    "dmx": {
+      "name": ["DMX", "DMX"],
+      "nouns": [
+        ["rapper", "rappers"],
+        ["dog breeder", "dog breeders"],
+        ["jail", "jail"],
+        ["misdemeanor", "misdemeanors"],
+        ["dog fight", "dog fights"]
+      ],
+      "adjectives": [
+        "illegal"
+      ],
+      "image": [
+        "dmx.jpg"
+      ]
+    },
+    "harvey": {
       "name": ["Steve", "Harvey"],
       "nouns": [
         ["teeth", "teeth"],
@@ -20,71 +24,95 @@
       ],
       "adjectives": [
         "shiny"
+      ],
+      "image": [
+        "steve.jpg"
       ]
     },
-  "zuckerberg": {
-    "name": ["Mark", "Zuckerberg"],
-    "nouns": [
-      ["robot", "robots"],
-      ["alien", "aliens"]
-    ],
-    "adjectives": [
-      "greesy"
-    ]
-  },
-  "cage": {
-    "name": ["Nick", "Cage"],
-    "nouns": [
-      ["hair", "hair"]
-    ],
-    "adjectives": [
-      "elongated"
-    ]
-  },
-  "stewart": {
-    "name": ["Martha", "Stewart"],
-    "nouns": [
-      ["jail", "jail"],
-      ["tax fraud", "tax fraud"],
-      ["soiree", "soirees"]
-    ],
-    "adjectives": [
-      "fraudulent",
-      "spooky"
-    ]
-  },
-  "cannon": {
-    "name": ["Nick", "Cannon"],
-    "nouns": [
-      ["almond", "almonds"]
-    ],
-    "adjectives": [
-      "forgettable",
-      "not funny"
-    ]
-  },
-  "cook": {
-    "name": ["Dane", "Cook"],
-    "nouns": [
-      ["laugh", "laughs"],
-      ["divorce", "divorces"],
-      ["commedian", "comendians"]
-    ],
-    "adjectives": [
-      "unfunny",
-      "round",
-      "sad"
-    ]
-  },
-  "bynes": {
-    "name": ["Amanda", "Bynes"],
-    "nouns": [
-      ["coke", "coke"],
-      ["drugs", "drugs"]
-    ],
-    "adjectives": [
-      "drugged out",
-      "all that"
-    ]
+    "zuckerberg": {
+      "name": ["Mark", "Zuckerberg"],
+      "nouns": [
+        ["robot", "robots"],
+        ["alien", "aliens"]
+      ],
+      "adjectives": [
+        "greesy"
+      ],
+      "image": [
+        "zuckerberg.jpg"
+      ]
+    },
+    "cage": {
+      "name": ["Nick", "Cage"],
+      "nouns": [
+        ["hair", "hair"]
+      ],
+      "adjectives": [
+        "elongated"
+      ],
+      "image": [
+        "cage_1.jpg",
+        "cage_2.jpg",
+        "cage_3.jpg"
+      ]
+    },
+    "stewart": {
+      "name": ["Martha", "Stewart"],
+      "nouns": [
+        ["jail", "jail"],
+        ["tax fraud", "tax fraud"],
+        ["soiree", "soirees"]
+      ],
+      "adjectives": [
+        "fraudulent",
+        "spooky"
+      ],
+      "image": [
+        "stewart.jpg"
+      ]
+    },
+    "cannon": {
+      "name": ["Nick", "Cannon"],
+      "nouns": [
+        ["almond", "almonds"]
+      ],
+      "adjectives": [
+        "forgettable",
+        "not funny"
+      ],
+      "image": [
+        "cannon.jpg"
+      ]
+    },
+    "cook": {
+      "name": ["Dane", "Cook"],
+      "nouns": [
+        ["laugh", "laughs"],
+        ["divorce", "divorces"],
+        ["commedian", "comendians"]
+      ],
+      "adjectives": [
+        "unfunny",
+        "round",
+        "sad"
+      ],
+      "image": [
+        "cook.jpg"
+      ]
+    },
+    "bynes": {
+      "name": ["Amanda", "Bynes"],
+      "nouns": [
+        ["coke", "coke"],
+        ["drugs", "drugs"]
+      ],
+      "adjectives": [
+        "drugged out",
+        "all that"
+      ],
+      "image": [
+        "bynes.jpg"
+      ]
+    }
   }
 }

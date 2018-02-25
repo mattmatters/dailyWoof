@@ -16,9 +16,7 @@ from scraper.sites import sites
 
 # Config
 
-CONNECTION = pika.BlockingConnection(
-    pika.ConnectionParameters(
-        'messager', retry_delay=5, connection_attempts=5))
+CONNECTION = pika.BlockingConnection(pika.ConnectionParameters('messager', retry_delay=5, connection_attempts=5))
 CHANNEL = CONNECTION.channel()
 CHANNEL.exchange_declare(exchange='stories', exchange_type='fanout')
 
