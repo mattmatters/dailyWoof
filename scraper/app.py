@@ -51,18 +51,19 @@ def publish_story(story):
 
 def main():
     # Pick any of the predefined sites or roll your own
-    work = [sites['cnn'], sites['bbc'], sites['nyTimes'], sites['guardian']]
+    work = [sites['cnn'], sites['bbc'], sites['guardian']]
 
     while True:
         random.shuffle(work)
         for job in work:
             links = get_links(BROWSER, job['url'], job['link_regex'])
 
-            for link in links:
+            for link in list(set(links)):
 
                 # Avoid doing unnessary duplicate work
                 if not REDIS.exists(link):
                     try:
+                        print(link)
                         story = get_story(BROWSER, link, job['story_xpath'])
                     except Exception:
                         continue
