@@ -1,7 +1,7 @@
 {
   "people": {
     "dmx": {
-      "name": ["DMX", "DMX", "Dominic"],
+      "name": ["DMX", "Dominic"],
       "nouns": [
         ["rapper", "rappers"],
         ["dog breeder", "dog breeders"],
@@ -25,6 +25,7 @@
         ["price", "prices"],
         ["family feud", "family feuds"],
         ["mustache", "mustaches"],
+        ["wrong award", "wrong awards"],
         ["bald person", "bald people"]
       ],
       "adjectives": [
@@ -40,10 +41,13 @@
       "name": ["Mark", "Zuckerberg"],
       "nouns": [
         ["robot", "robots"],
-        ["alien", "aliens"]
+        ["alien", "aliens"],
+        ["spy", "spies"],
+        ["lizard person", "lizard people"]
       ],
       "adjectives": [
-        "greesy"
+        "greesy",
+        "sneaky"
       ],
       "image": [
         "zuckerberg.jpg"
@@ -52,7 +56,8 @@
     "cage": {
       "name": ["Nick", "Cage"],
       "nouns": [
-        ["hair", "hair"]
+        ["hair", "hair"],
+        ["debt", "debts"]
       ],
       "adjectives": [
         "elongated"
@@ -85,7 +90,8 @@
       "name": ["Nick", "Cannon"],
       "nouns": [
         ["almond", "almonds"],
-        ["rapper", "rapper"]
+        ["rapper", "rapper"],
+        ["career", "careers"]
       ],
       "adjectives": [
         "forgettable",
@@ -100,7 +106,9 @@
       "nouns": [
         ["coke", "coke"],
         ["drugs", "drugs"],
-        ["demon", "demons"]
+        ["demon", "demons"],
+        ["Amanda Amanda Amanda Show", "Amanda Amanda Amanda Shows"],
+        ["show", "shows"]
       ],
       "adjectives": [
         "drugged out",
