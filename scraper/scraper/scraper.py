@@ -42,12 +42,9 @@ def get_details(header):
     Extracts the search engine crawler information
     This is incredibly useful as just about every website has them
     """
-    title = header.find_element_by_xpath(
-        '//meta[contains(@property, "og:title")]')
-    desc = header.find_element_by_xpath(
-        '//meta[contains(@name, "description")]')
-    img = header.find_element_by_xpath(
-        '//meta[contains(@property, "og:image")]')
+    title = header.find_element_by_xpath('//meta[contains(@property, "og:title")]')
+    desc = header.find_element_by_xpath('//meta[contains(@name, "description")]')
+    img = header.find_element_by_xpath('//meta[contains(@property, "og:image")]')
 
     return {
         'title': title.get_attribute('content') if title else DEFAULT_TITLE,

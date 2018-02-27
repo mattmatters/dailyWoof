@@ -22,9 +22,7 @@ QUEUE_NAME = 'stories'
 
 # Basic enivronment configuration
 REDIS = Redis(host='redis', port=6379)
-BROWSER = webdriver.Remote(
-    command_executor='http://browser:8910',
-    desired_capabilities=DesiredCapabilities.PHANTOMJS)
+BROWSER = webdriver.Remote(command_executor='http://browser:8910', desired_capabilities=DesiredCapabilities.PHANTOMJS)
 
 
 def publish_story(channel, story):
@@ -55,34 +53,46 @@ def main():
     channel.exchange_declare(exchange=QUEUE_NAME, exchange_type='fanout')
 
     # Pick any of the predefined sites or roll your own
-    work = [sites['bbc'], sites['usa'], sites['cnn'], sites['guardian']]
+    work = {
+        'bbc': sites['bbc'],
+        'usa': sites['usa'],
+        'cnn': sites['cnn'],
+        'guardian': sites['guardian']
+    }
 
     while True:
-        random.shuffle(work)
-        for job in work:
-            links = get_links(BROWSER, job['url'], job['link_regex'])
+        sleep(30)
 
-            for link in list(set(links)):
+        # We want to not look like a bot, I found that initially get all the links to possible scrape
+        # then shuffling them looks much less like a bot.
+        links = []
+        for name, job in work.items():
+            links += [(name, link) for link in get_links(BROWSER, job['url'], job['link_regex'])]
 
-                # Avoid doing unnessary duplicate work
-                if not REDIS.exists(link):
+        random.shuffle(links)
+
+        for link in list(set(links)):
+            # Avoid doing unnessary duplicate work
+            if not REDIS.exists(link):
+                # Just in case
+                sleep(random.randint(1, 8))
+                try:
+                    print(link)
+                    story = get_story(BROWSER, link[1], work[link[0]]['story_xpath'])
+                except Exception:
+                    continue
+
+                # Quick filtering to avoid invalid stories
+                if len(story['story']) > 0:
                     try:
-                        print(link)
-                        story = get_story(BROWSER, link, job['story_xpath'])
+                        publish_story(channel, story)
                     except Exception:
-                        continue
+                        # Refresh the connection
+                        connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
+                        channel = connection.channel()
 
-                    # Quick filtering to avoid invalid stories
-                    if len(story['story']) > 0:
-                        try:
-                            publish_story(channel, story)
-                        except Exception:
-                            # Refresh the connection
-                            connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
-                            channel = connection.channel()
-
-                            # If it doesn't succeed this time, it will crash the application
-                            publish_story(channel, story)
+                        # If it doesn't succeed this time, it will crash the application
+                        publish_story(channel, story)
 
 
 if __name__ == '__main__':
