@@ -37,7 +37,7 @@ Here's a quick overview to get anyone started.
 .
 ├── LICENSE        # Don't use logos and stuff
 ├── README.md      # Hi
-├── dictionary     # Configuration for words to replace
+├── config         # Configuration for words to replace
 ├── docker-compose.yml
 ├── frontend       # Vue frontend, dist directory ends up in web/static
 ├── images         # Facial recognition and replacer, stores results in an S3 Bucket
