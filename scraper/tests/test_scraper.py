@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from scraper import scraper
+from scraper import get_story
 from scraper.sites import sites
 
 browser = webdriver.Remote(
@@ -17,7 +17,7 @@ def test_cnn_regex():
 
 
 def test_cnn_story():
-    story = scraper.get_story(
+    story = get_story(
         browser,
         'http://www.cnn.com/2017/11/13/politics/george-hw-bush-groping-allegation/index.html',
         sites['cnn']['story_xpath'])
@@ -30,7 +30,7 @@ def test_wp_regex():
     assert len(stories) > 0
 
 def test_wp_story():
-    story = scraper.get_story(
+    story = get_story(
         browser,
         'https://www.washingtonpost.com/politics/more-governors-willing-to-consider-gun-law-changes-after-florida-shooting/2018/02/25/eac08ec0-1a33-11e8-b2d9-08e748f892c0_story.html?hpid=hp_hp-top-table-main_gun-sunday-12pm%3Ahomepage%2Fstory&utm_term=.d00bad371da1',
         sites['wp']['story_xpath'])
@@ -45,7 +45,7 @@ def test_bbc_regex():
 
 
 def test_bbc_story():
-    story = scraper.get_story(
+    story = get_story(
         browser, 'http://www.bbc.com/news/world-us-canada-41973952',
         sites['bbc']['story_xpath'])
     assert len(story['title']) > 0
@@ -60,7 +60,7 @@ def test_nyTimes_regex():
 
 
 def test_nyTimes_story():
-    story = scraper.get_story(
+    story = get_story(
         browser,
         'https://www.nytimes.com/2017/11/09/opinion/nuisance-ordinances-eviction-violence.html?action=click&pgtype=Homepage&clickSource=story-heading&module=opinion-c-col-left-region&region=opinion-c-col-left-region&WT.nav=opinion-c-col-left-region',
         sites['nyTimes']['story_xpath'])
@@ -76,7 +76,7 @@ def test_guardian_regex():
 
 
 def test_guardian_story():
-    story = scraper.get_story(
+    story = get_story(
         browser,
         'https://www.theguardian.com/us-news/2017/nov/09/one-year-later-trump-takes-a-grand-tour-of-asia-as-clinton-visits-wisconsin-finally',
         sites['guardian']['story_xpath'])
@@ -92,7 +92,7 @@ def test_guardian_story():
 
 
 # def test_eOnline_story():
-#     story = scraper.get_story(
+#     story = get_story(
 #         browser,
 #         'http://www.eonline.com/news/893550/did-kylie-jenner-have-a-private-baby-shower-all-the-details-on-her-pink-filled-celebration',
 #         sites['eOnline']['story_xpath'])
