@@ -11,7 +11,8 @@ import pika
 from redis import Redis
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from scraper.scraper import get_story, get_links
+from scraper import get_story
+from scraper.scraper import get_links
 from scraper.sites import sites
 
 # Config
