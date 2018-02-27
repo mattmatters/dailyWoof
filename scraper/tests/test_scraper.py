@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from scraper import get_story
+from scraper import scraper, get_story
 from scraper.sites import sites
 
 browser = webdriver.Remote(
