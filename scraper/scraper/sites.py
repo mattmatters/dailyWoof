@@ -43,6 +43,11 @@ sites = {
         'url': 'https://www.washingtonpost.com/?reload=false',
         'link_regex': r'https?:\/\/(www.)?washingtonpost.com/news/.*',
         'story_xpath': '//article/*'
+    },
+    'usa': {
+        'url': 'https://www.usatoday.com/',
+        'link_regex': r'https?:\/\/(www.)?usatoday.com/story/.*',
+        'story_xpath': '.p-text'
     }
 }
 """
@@ -51,5 +56,6 @@ Ones that have been ruled out
 + NBC: infinite scroll
 + Wall Street Journal: paywall
 + USA Today: frequent pop ups
-
++ Washington Post: There scrape version is more trouble then it's worth
++ Yahoo: Images suck
 """

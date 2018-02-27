@@ -77,7 +77,6 @@ def test_guardian_story():
 #     stories = scraper.get_links(browser, sites['eOnline']['url'], sites['eOnline']['link_regex'])
 #     assert len(stories) > 0
 
-
 # def test_eOnline_story():
 #     story = get_story(
 #         browser,
@@ -99,3 +98,16 @@ def test_guardian_story():
 #     assert len(story['title']) > 0
 #     assert len(story['desc']) > 0
 #     assert len(story['story']) > 0
+
+def test_usa_regex():
+    stories = scraper.get_links(browser, sites['usa']['url'], sites['usa']['link_regex'])
+    assert len(stories) > 0
+
+def test_wp_story():
+    story = get_story(
+        browser,
+        'https://www.usatoday.com/story/money/nation-now/2018/02/26/trump-just-claimed-u-s-makes-better-solar-panels-than-china-thats-not-quite-right/375307002/',
+        sites['usa']['story_xpath'])
+    assert len(story['title']) > 0
+    assert len(story['desc']) > 0
+    assert len(story['story']) > 0
