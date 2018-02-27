@@ -54,9 +54,11 @@ def main():
 
     # Pick any of the predefined sites or roll your own
     work = {
+        'wp': sites['wp'],
         'bbc': sites['bbc'],
         'usa': sites['usa'],
         'cnn': sites['cnn'],
+        'eOnline': sites['eOnline'],
         'guardian': sites['guardian']
     }
 
