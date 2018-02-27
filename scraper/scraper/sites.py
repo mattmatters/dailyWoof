@@ -42,7 +42,7 @@ sites = {
     'wp': {
         'url': 'https://www.washingtonpost.com/?reload=false',
         'link_regex': r'https?:\/\/(www.)?washingtonpost.com/news/.*',
-        'story_xpath': '.article-body p'
+        'story_xpath': '//article/*'
     }
 }
 """

@@ -55,7 +55,7 @@ def main():
     channel.exchange_declare(exchange=QUEUE_NAME, exchange_type='fanout')
 
     # Pick any of the predefined sites or roll your own
-    work = [sites['bbc'], sites['wp'], sites['cnn'], sites['guardian']]
+    work = [sites['bbc'], sites['cnn'], sites['guardian']]
 
     while True:
         random.shuffle(work)
