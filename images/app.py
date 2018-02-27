@@ -106,7 +106,11 @@ def callback(ch, method, properties, body):
     except Exception as e:
         return
 
-    name = extract_name(url)[0]
+    url_matches = extract_name(url)
+    if url_matches is None:
+        return
+
+    name = url_matches[0]
     image_type = name.split(".")
     image_type = image_type[len(image_type) - 1]
     buffer = cv2.imencode("." + image_type, img)[1].tostring()
