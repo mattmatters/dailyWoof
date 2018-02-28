@@ -30,7 +30,7 @@ sites = {
         'story_xpath': '.content__article-body'
     },
     'eOnline': {
-        'url': 'http://wwow.eonline.com',
+        'url': 'http://www.eonline.com',
         'link_regex': r'https?:\/\/(www.)?eonline.com\/news\/.*',
         'story_xpath': '.post-content'
     },
@@ -42,7 +42,7 @@ sites = {
     'wp': {
         'url': 'https://www.washingtonpost.com/?reload=false',
         'link_regex': r'https?:\/\/(www.)?washingtonpost.com/news/.*',
-        'story_xpath': '//article/p'
+        'story_xpath': '//article//p'
     },
     'usa': {
         'url': 'https://www.usatoday.com/',
