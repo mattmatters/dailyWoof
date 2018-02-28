@@ -34,25 +34,70 @@ sites = {
         'link_regex': r'https?:\/\/(www.)?eonline.com\/news\/.*',
         'story_xpath': "//*[contains(@class, 'post-content')]"
     },
-    'yahoo': {
-        'url': 'https://www.yahoo.com/news/',
-        'link_regex': r'https?:\/\/(www.)?yahoo.com\/news\/.*',
-        'story_xpath': "//*[contains(@class, 'canvas-text')]",
-    },
-    'wp': {
-        'url': 'https://www.washingtonpost.com/?reload=false',
-        'link_regex': r'https?:\/\/(www.)?washingtonpost.com/news/.*',
-        'story_xpath': '//article/p'
-    },
     'usa': {
         'url': 'https://www.usatoday.com/',
         'link_regex': r'https?:\/\/(www.)?usatoday.com/story/.*',
         'story_xpath': "//*[contains(@class, 'p-text')]"
     },
-    'newsbud': {
-        'url': 'https://www.newsbud.com/',
-        'link_regex': r'https?:\/\/(www.)?newsbud.com/20.*',
+    'fox': {
+        'url': 'https://www.foxnews.com/',
+        'link_regex': r'https?:\/\/(www.)?foxnews.com\/.*\/20.*',
+        'story_xpath': "//*[contains(@class, 'article-body')]/p"
+    },
+    'la_times': {
+        'url': 'http://www.latimes.com/',
+        'link_regex': r'https?\/\/(www.)?latimes\/politics.*',
+        'story_xpath': "//*[contains(@class, 'card-content')]/p",
+    },
+    'nbc': {
+        'url': 'https://www.nbcnews.com/',
+        'link_regex': r'https?:\/\/(www.)?nbcnews.com\/news.*',
+        'story_xpath': "//*[contains(@class, 'article-body')]/p",
+    },
+    'npr': {
+        'url': 'https://www.npr.org/',
+        'link_regex': r'https?\/\/(www.)?npr.org\/20.*',
+        'story_xpath': "//*[contains(@class, 'storytext')]/p",
+    },
+    'reuters': {
+        'url': 'https://www.reuters.com/',
+        'link_regex': r'',
+        'story_xpath': "",
+    },
+    'time': {
+        'url': 'http://time.com/',
+        'link_regex': r'',
+        'story_xpath': "",
+    },
+    'chicago_tribune': {
+        'url': 'http://www.chicagotribune.com/',
+        'link_regex': r'',
+        'story_xpath': "",
+    },
+    'forbes': {
+        'url': 'https://www.forbes.com/',
+        'link_regex': r'',
+        'story_xpath': "",
+    },
+    'verge': {
+        'url': 'https://www.theverge.com/',
+        'link_regex': r'https?:\/\/(www.)?theverge.com\/20.*',
+        'story_xpath': "//*[contains(@class, 'c-entry-content')]/p",
+    },
+    'metro': {
+        'url': 'http://metro.co.uk/',
+        'link_regex': r'https?:\/\/(www.)?metro.co.uk\/20.*',
+        'story_xpath': "//*[contains(@class, 'article-body')]/p"
+    },
+    'nola': {
+        'url': 'http://www.nola.com/',
+        'link_regex': r'https?:\/\/(www.)?nola.com\/.*\/20.*',
         'story_xpath': "//*[contains(@class, 'entry-content')]/p",
+    },
+    'cbs': {
+        'url': 'https://www.cbsnews.com/',
+        'link_regex': r'https?:\/\/(www.)?cbsnews.com\/news\/.*',
+        'story_xpath': "//*[contains(@class, 'entry')]/div/p",
     }
 }
 """

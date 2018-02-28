@@ -22,7 +22,7 @@ QUEUE_NAME = 'stories'
 
 # Basic enivronment configuration
 REDIS = Redis(host='redis', port=6379)
-BROWSER = webdriver.Remote(command_executor='http://browser:8910', desired_capabilities=DesiredCapabilities.PHANTOMJS)
+BROWSER = webdriver.Remote(command_executor='http://browser:8910', desired_capabilities=DesiredCapabilities.CHROME)
 
 
 def publish_story(channel, story):
@@ -54,12 +54,12 @@ def main():
 
     # Pick any of the predefined sites or roll your own
     work = {
-        'wp': sites['wp'],
         'bbc': sites['bbc'],
         'usa': sites['usa'],
         'cnn': sites['cnn'],
+        'fox': sites['fox'],
         'eOnline': sites['eOnline'],
-        'guardian': sites['guardian']
+        'guardian': sites['guardian'],
     }
 
     while True:
