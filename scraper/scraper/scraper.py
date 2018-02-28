@@ -30,13 +30,6 @@ def get_links(browser, url, regex):
 
     return [link for link in links if search(regex, link)]
 
-
-def get_story_body(body, xpath):
-    """Uses xpath to get all story text matching it"""
-    story = body.find_elements_by_css_selector(xpath)
-    return "\n".join([x.text for x in story if len(x.text) > 0])
-
-
 def get_details(header):
     """
     Extracts the search engine crawler information
@@ -64,8 +57,7 @@ def get_story(browser, story_url, xpath):
     browser.get(story_url)
     browser.implicitly_wait(2)
     details = get_details(browser.find_element_by_css_selector('head'))
-    story = get_story_body(browser.find_element_by_css_selector('body'), xpath)
-
+    story = "\n".join([x.text for x in browser.find_elements_by_xpath(xpath) if len(x.text) > 0])
     return {
         'url': story_url,
         'title': details['title'],

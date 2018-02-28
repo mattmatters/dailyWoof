@@ -7,7 +7,7 @@ browser = webdriver.Remote(
     command_executor='http://browser:8910',
     desired_capabilities=DesiredCapabilities.PHANTOMJS)
 
-browser.implicitly_wait(2)
+browser.implicitly_wait(10)
 
 
 # Tests that our regex works
@@ -82,8 +82,7 @@ def test_guardian_story():
 
 
 def test_wp_regex():
-    stories = scraper.get_links(browser, sites['wp']['url'],
-                                sites['wp']['link_regex'])
+    stories = scraper.get_links(browser, sites['wp']['url'], sites['wp']['link_regex'])
     assert len(stories) > 0
 
 
@@ -92,6 +91,21 @@ def test_wp_story():
         browser,
         'https://www.washingtonpost.com/politics/more-governors-willing-to-consider-gun-law-changes-after-florida-shooting/2018/02/25/eac08ec0-1a33-11e8-b2d9-08e748f892c0_story.html?hpid=hp_hp-top-table-main_gun-sunday-12pm%3Ahomepage%2Fstory&utm_term=.d00bad371da1',
         sites['wp']['story_xpath'])
+    assert len(story['title']) > 0
+    assert len(story['desc']) > 0
+    assert len(story['story']) > 0
+    assert len(story['image']) > 0
+
+def test_newsbud_regex():
+    stories = scraper.get_links(browser, sites['newsbud']['url'], sites['newsbud']['link_regex'])
+    assert len(stories) > 0
+
+
+def test_newsbud_story():
+    story = get_story(
+        browser,
+        'https://www.newsbud.com/2018/02/27/is-the-military-industrial-complex-bankrupting-america/',
+        sites['newsbud']['story_xpath'])
     assert len(story['title']) > 0
     assert len(story['desc']) > 0
     assert len(story['story']) > 0

@@ -12,42 +12,47 @@ sites = {
     'cnn': {
         'url': 'https://www.cnn.com',
         'link_regex': r'https?:\/\/(www.)?cnn.com\/20\d*',
-        'story_xpath': '.zn-body__paragraph'
+        'story_xpath': "//*[contains(@class, 'zn-body__paragraph')]",
     },
     'bbc': {
         'url': 'http://www.bbc.com/',
         'link_regex': r'https?:\/\/(www.)?bbc.com\/news\/.*-\d*',
-        'story_xpath': '.story-body__inner'
+        'story_xpath': "//*[contains(@class, 'story-body__inner')]/p",
     },
     'nyTimes': {
         'url': 'https://www.nytimes.com/',
         'link_regex': r'https?:\/\/(www.)?nytimes.com\/20*',
-        'story_xpath': '.story-body-text'
+        'story_xpath': "//*[contains(@class, 'story-body-text')]",
     },
     'guardian': {
         'url': 'https://www.theguardian.com',
         'link_regex': r'https?:\/\/(www.)?theguardian.com\/us-news\/*',
-        'story_xpath': '.content__article-body'
+        'story_xpath': "//*[contains(@class, 'content__article-body')]",
     },
     'eOnline': {
         'url': 'http://www.eonline.com',
         'link_regex': r'https?:\/\/(www.)?eonline.com\/news\/.*',
-        'story_xpath': '.post-content'
+        'story_xpath': "//*[contains(@class, 'post-content')]"
     },
     'yahoo': {
         'url': 'https://www.yahoo.com/news/',
         'link_regex': r'https?:\/\/(www.)?yahoo.com\/news\/.*',
-        'story_xpath': '.canvas-text'
+        'story_xpath': "//*[contains(@class, 'canvas-text')]",
     },
     'wp': {
         'url': 'https://www.washingtonpost.com/?reload=false',
         'link_regex': r'https?:\/\/(www.)?washingtonpost.com/news/.*',
-        'story_xpath': '//article//p'
+        'story_xpath': '//article/p'
     },
     'usa': {
         'url': 'https://www.usatoday.com/',
         'link_regex': r'https?:\/\/(www.)?usatoday.com/story/.*',
-        'story_xpath': '.p-text'
+        'story_xpath': "//*[contains(@class, 'p-text')]"
+    },
+    'newsbud': {
+        'url': 'https://www.newsbud.com/',
+        'link_regex': r'https?:\/\/(www.)?newsbud.com/20.*',
+        'story_xpath': "//*[contains(@class, 'entry-content')]/p",
     }
 }
 """
