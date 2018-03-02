@@ -32,9 +32,18 @@ test_scraper:
 cleanup:
   stage: cleanup
   script:
+    - rm -rf ./front_build
     - docker-compose down
 
-build:
+build_front_end:
   stage: build
+  environment: production
   script:
+    - mkdir ./front_build
     - docker-compose build
+    - BUILD="PROD" docker-compose run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist frontend
+  deploy:
+    image: python:latest
+    script:
+      - pip install awscli
+      - aws s3 cp ./front_build s3://cdn.dailywoof.space/ --recursive
