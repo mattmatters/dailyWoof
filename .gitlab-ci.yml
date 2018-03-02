@@ -45,8 +45,8 @@ build_front_end:
 deploy_front_end:
   stage: deploy
   variables:
-    - CDN_BUCKET: "s3://cdn.dailywoof.space/"
-    - INDEX_BUCKET: "s3://dailywoof.space/"
+    CDN_BUCKET: "s3://cdn.dailywoof.space/"
+    INDEX_BUCKET: "s3://dailywoof.space/"
   script:
     - pip install awscli
     - aws s3 cp ./front_build $CDN_BUCKET --recursive
