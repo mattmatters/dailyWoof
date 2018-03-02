@@ -58,8 +58,15 @@ def main():
         'usa': sites['usa'],
         'cnn': sites['cnn'],
         'fox': sites['fox'],
+        'nbc': sites['nbc'],
+        'cbs': sites['cbs'],
+        'npr': sites['npr'],
+        'nola': sites['nola'],
+        'metro': sites['metro'],
+        'verge': sites['verge'],
         'eOnline': sites['eOnline'],
         'guardian': sites['guardian'],
+        'la_times': sites['la_times'],
     }
 
     while True:
