@@ -46,7 +46,7 @@ sites = {
     },
     'la_times': {
         'url': 'http://www.latimes.com/',
-        'link_regex': r'https?\/\/(www.)?latimes.com\/(politics|business).*',
+        'link_regex': r'https?:\/\/(www.)?latimes.com\/(politics|business).*',
         'story_xpath': "//*[contains(@class, 'card-content')]/p",
     },
     'nbc': {
