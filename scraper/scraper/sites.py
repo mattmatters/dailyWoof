@@ -46,7 +46,7 @@ sites = {
     },
     'la_times': {
         'url': 'http://www.latimes.com/',
-        'link_regex': r'https?\/\/(www.)?latimes\/politics.*',
+        'link_regex': r'https?\/\/(www.)?latimes.com\/(politics|business).*',
         'story_xpath': "//*[contains(@class, 'card-content')]/p",
     },
     'nbc': {
@@ -56,7 +56,7 @@ sites = {
     },
     'npr': {
         'url': 'https://www.npr.org/',
-        'link_regex': r'https?\/\/(www.)?npr.org\/20.*',
+        'link_regex': r'https?:\/\/(www.)?npr.org\/(sections\/)?(therecord\/)?20.*',
         'story_xpath': "//*[contains(@class, 'storytext')]/p",
     },
     'reuters': {
