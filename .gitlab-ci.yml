@@ -9,6 +9,7 @@ services:
 stages:
   - test
   - build
+  - deploy
   - cleanup
 
 # docker-compose does not come with the image normally, so lets add it
@@ -29,12 +30,6 @@ test_scraper:
   script:
     - docker-compose run scraper pytest
 
-cleanup:
-  stage: cleanup
-  script:
-    - rm -rf ./front_build
-    - docker-compose down
-
 build_front_end:
   stage: build
   script:
@@ -53,3 +48,9 @@ deploy_front_end:
     - aws s3 cp ./front_build/index.html $INDEX_BUCKET
   only:
     - master
+
+cleanup:
+  stage: cleanup
+  script:
+    - rm -rf ./front_build
+    - docker-compose down
