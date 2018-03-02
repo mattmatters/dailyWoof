@@ -44,13 +44,17 @@ deploy_front_end:
     INDEX_BUCKET: "s3://dailywoof.space/"
   script:
     - pip install awscli
-    - aws s3 cp ./front_build $CDN_BUCKET --recursive
-    - aws s3 cp ./front_build/index.html $INDEX_BUCKET
+    - aws s3 cp ./front_build $CDN_BUCKET --recursive # Javascript and css
+    - aws s3 cp ./front_build/index.html $INDEX_BUCKET # index.html
   only:
     - master
+
+cleanup_front_end:
+  stage: cleanup
+  script:
+    - rm -rf ./front_build
 
 cleanup:
   stage: cleanup
   script:
-    - rm -rf ./front_build
     - docker-compose down
