@@ -37,10 +37,19 @@ cleanup:
 
 build_front_end:
   stage: build
-  environment: production
   script:
     - mkdir ./front_build
     - docker-compose build
     - BUILD="PROD" docker-compose run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist frontend
+
+deploy_front_end:
+  stage: deploy
+  variables:
+    - CDN_BUCKET: "s3://cdn.dailywoof.space/"
+    - INDEX_BUCKET: "s3://dailywoof.space/"
+  script:
     - pip install awscli
-    - aws s3 cp ./front_build s3://cdn.dailywoof.space/ --recursive
+    - aws s3 cp ./front_build $CDN_BUCKET --recursive
+    - aws s3 cp ./front_build/index.html $INDEX_BUCKET
+  only:
+    - master
