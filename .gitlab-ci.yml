@@ -34,7 +34,7 @@ build_front_end:
   stage: build
   script:
     - mkdir ./front_build
-    - docker-compose build
+    - docker-compose build frontend
     - BUILD="PROD" docker-compose run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist frontend
 
 deploy_front_end:
