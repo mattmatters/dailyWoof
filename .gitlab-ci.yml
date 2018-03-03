@@ -22,6 +22,7 @@ before_script:
   - docker version
   - docker-compose version
   - docker info
+  - docker login -u "$HUB_USER" -p "HUB_PASSWORD"
 
 build:
   stage: build
@@ -43,7 +44,7 @@ release_containers:
   stage: release
   script:
     - docker-compose pull -t $CI_JOB_NAME
-    - docker-compose tag $CI_JOB_NAME release
+    - docker-compose tag $CI_JOB_NAME latest
     - docker-compose push
   only:
     - master
