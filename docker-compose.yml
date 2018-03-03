@@ -27,6 +27,7 @@ services:
       restart_policy:
         condition: on-failure
   web:
+    image: superpolkadance/dailywoofweb
     build: web
     command: ./bin/app
     links:
@@ -40,10 +41,17 @@ services:
       - BUILD=$BUILD
       - GIN_MODE=$GIN_MODE
     volumes:
-      - ./dictionary:/go/src/app/dictionary
       - web-stuff:/go/src/app/dist
       - ./config:/go/src/app/config
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
   natlang:
+    image: superpolkadance/dailywoofnlp
     build: natlang
     command: python app.py
     depends_on:
@@ -52,9 +60,14 @@ services:
       - messager
       - redis
     deploy:
+      replicas: 2
       restart_policy:
         condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
   images:
+    image: superpolkadance/dailywoofimages
     build: images
     command: python app.py
     links:
@@ -69,8 +82,12 @@ services:
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     deploy:
+      replicas: 2
       restart_policy:
         condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
   frontend:
     build: frontend
     command: npm run build
@@ -79,12 +96,20 @@ services:
     environment:
       - BUILD=$BUILD
   scraper:
+    image: superpolkadance/dailywoofscraper
     build: scraper
     command: python app.py
     links:
       - phantomjs:browser
       - redis
       - messager
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
 volumes:
   web-stuff:
   redis-db:
