@@ -15,8 +15,6 @@ services:
         aliases:
           - phantomjs
           - browser
-    logging:
-      driver: "none"
     deploy:
       restart_policy:
         condition: on-failure
@@ -52,7 +50,6 @@ services:
       - GIN_MODE=$GIN_MODE
     volumes:
       - web-stuff:/go/src/app/dist
-      - ./config:/go/src/app/config
     deploy:
       replicas: 2
       restart_policy:
@@ -91,8 +88,6 @@ services:
     depends_on:
       - redis
       - messager
-    volumes:
-      - ./config:/usr/src/app/config
     environment:
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
