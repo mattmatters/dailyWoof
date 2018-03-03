@@ -22,7 +22,7 @@ QUEUE_NAME = 'stories'
 
 # Basic enivronment configuration
 REDIS = Redis(host='redis', port=6379)
-BROWSER = webdriver.Remote(command_executor='http://browser:8910', desired_capabilities=DesiredCapabilities.CHROME)
+BROWSER = webdriver.Remote(command_executor='http://phantomjs:8910/', desired_capabilities=DesiredCapabilities.PHANTOMJS)
 
 
 def publish_story(channel, story):

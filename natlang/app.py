@@ -25,10 +25,6 @@ def extract_name(url):
     """Takes the a url and exracts the images name"""
     return re.search(r"[^\/]*\.(png|jpg|jpeg)", url)
 
-def create_queue(channel, name):
-    queue = channel.queue_declare(queue=name)
-    channel.queue_bind(exchange='stories', queue=queue.method.queue)
-
 def callback(ch, method, properties, body):
     """RabbitMQ callback"""
     body = json.loads(body.decode('utf-8'))
@@ -41,8 +37,10 @@ def main():
     """Subscribe to queue and story processed stories"""
 
     # Create a queue and bind it to the stories exchange
-    create_queue(CHANNEL, QUEUE_NAME)
-    create_queue(CHANNEL, NEXT_QUEUE_NAME)
+    CHANNEL.exchange_declare(exchange='stories', exchange_type='fanout')
+    CHANNEL.queue_declare(queue=NEXT_QUEUE_NAME)
+    queue = CHANNEL.queue_declare(queue=QUEUE_NAME)
+    CHANNEL.queue_bind(exchange='stories', queue=queue.method.queue)
 
     # Start consuming
     CHANNEL.basic_qos(prefetch_count=1)
