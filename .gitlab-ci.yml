@@ -43,6 +43,9 @@ deploy_front_end:
     CDN_BUCKET: "s3://cdn.dailywoof.space/"
     INDEX_BUCKET: "s3://dailywoof.space/"
   script:
+    - mkdir ./front_build
+    - docker-compose build frontend
+    - BUILD="PROD" docker-compose run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist frontend
     - pip install awscli
     - aws s3 cp ./front_build $CDN_BUCKET --recursive # Javascript and css
     - aws s3 cp ./front_build/index.html $INDEX_BUCKET # index.html
