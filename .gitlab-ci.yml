@@ -1,14 +1,18 @@
 image: docker:latest
+services:
+  - docker:dind
+
+cache:
+  key: "$CI_JOB_NAME"
+  untracked: true
 
 variables:
   DOCKER_DRIVER: overlay2
 
-services:
-  - docker:dind
-
 stages:
-  - test
   - build
+  - test
+  - release
   - deploy
   - cleanup
 
@@ -18,6 +22,11 @@ before_script:
   - docker version
   - docker-compose version
   - docker info
+
+build:
+  stage: build
+  script:
+    - docker-compose build -t $CI_JOB_NAME
 
 test_front_end:
   stage: test
@@ -30,12 +39,29 @@ test_scraper:
   script:
     - docker-compose run scraper pytest
 
-build_front_end:
-  stage: build
+release_containers:
+  stage: release
+  script:
+    - docker-compose pull -t $CI_JOB_NAME
+    - docker-compose tag $CI_JOB_NAME release
+    - docker-compose push
+  only:
+    - master
+
+release_front_end:
+  stage: release
   script:
     - mkdir ./front_build
-    - docker-compose build frontend
-    - BUILD="PROD" docker-compose run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist frontend
+    - BUILD="PROD" docker-compose run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist frontend:$CI_JOB_NAME
+  only:
+    - master
+
+deploy_containers:
+  stage: deploy
+  script:
+    - docker-compose push
+  only:
+    - master
 
 deploy_front_end:
   stage: deploy
@@ -43,21 +69,14 @@ deploy_front_end:
     CDN_BUCKET: "s3://cdn.dailywoof.space/"
     INDEX_BUCKET: "s3://dailywoof.space/"
   script:
-    - mkdir ./front_build
-    - docker-compose build frontend
-    - BUILD="PROD" docker-compose run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist frontend
     - pip install awscli
     - aws s3 cp ./front_build $CDN_BUCKET --recursive # Javascript and css
     - aws s3 cp ./front_build/index.html $INDEX_BUCKET # index.html
   only:
     - master
 
-cleanup_front_end:
-  stage: cleanup
-  script:
-    - rm -rf ./front_build
-
 cleanup:
   stage: cleanup
   script:
     - docker-compose down
+    - rm -rf ./front_build
