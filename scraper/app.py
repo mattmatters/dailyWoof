@@ -11,9 +11,11 @@ from time import sleep
 import pika
 from redis import Redis
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from scraper import get_story, get_links
 from scraper.sites import sites
+
 
 # Logging
 WORKER_INFO = {'clientip': '298', 'user': 'crawler'}
@@ -32,12 +34,15 @@ REDIS = Redis(host='redis', port=6379)
 print("BEGIN")
 
 def connect_browser():
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    options.add_argument('window-size=1200x600')
+    options = Options()
+    options.add_argument("--headless")
+    browser = webdriver.Firefox(firefox_options=options, executable_path="/usr/bin/geckodriver")
+    # options = webdriver.ChromeOptions()
+    # options.add_argument('headless')
+    # options.add_argument('window-size=1200x600')
 
-    browser = webdriver.Chrome(chrome_options=options)
-    browser.implicitly_wait(2)
+    # browser = webdriver.Chrome(chrome_options=options)
+    # browser.implicitly_wait(2)
     return browser
 
 def publish_story(channel, story):

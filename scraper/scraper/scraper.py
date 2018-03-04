@@ -3,7 +3,6 @@ Main library functions.
 Give it a valid Selenium Driver connected to a browser as the browser argument.
 """
 from re import search
-from scraper.utility import set_story
 
 # Selenium and automating a real web browser on the web is a bit finicky
 # So a lot of the try catch statements are protecting errors
@@ -62,19 +61,3 @@ def get_story(browser, story_url, xpath):
         'image': details['image'],
         'story': story
     }
-
-
-def scrape_site(browser, db_client, details):
-    links = get_links(browser, details['url'], details['link_regex'])
-
-    for link in links:
-        if not db_client.exists(link):
-            try:
-                story = get_story(browser, link, details['story_xpath'])
-            except Exception:
-                continue
-
-            if len(story['story']):
-                set_story(db_client, story)
-
-    return
