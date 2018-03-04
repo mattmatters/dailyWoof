@@ -25,7 +25,7 @@ RUN apt-get install -y unzip \
         && ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 # Add Chrome as a user
-RUN groupadd -r chrome && useradd -r -g chrome -G audio,video chrome \
+RUN groupadd -r chrome && useradd -r -g chrome -G audio,video,root chrome \
         && mkdir -p /home/chrome && chown -R chrome:chrome /home/chrome
 
 # Intstall this stuff for caching

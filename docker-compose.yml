@@ -97,8 +97,6 @@ services:
     image: superpolkadance/dailywoofscraper
     build: scraper
     command: python app.py
-    cap_add:
-      - SYS_ADMIN
     depends_on:
       - messager
     networks:
