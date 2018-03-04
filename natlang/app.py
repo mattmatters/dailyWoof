@@ -12,7 +12,7 @@ from natlang.nlp import process_txt
 
 # Set up logging
 WORKER_INFO = {'clientip': '298', 'user': 'nlp'}
-FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
+FORMAT = '%(asctime)-15s %(message)s'
 logging.basicConfig(format=FORMAT)
 LOGGER = logging.getLogger('nlp_worker')
 

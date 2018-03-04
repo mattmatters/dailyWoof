@@ -18,12 +18,12 @@ from scraper.sites import sites
 
 # Logging
 WORKER_INFO = {'clientip': '298', 'user': 'crawler'}
-FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
+FORMAT = '%(asctime)-15s %(message)s'
 logging.basicConfig(format=FORMAT)
 LOGGER = logging.getLogger('nlp_worker')
 
 # Config
-CONNECTION_PARAMETERS = pika.ConnectionParameters('messager', retry_delay=5, connection_attempts=5)
+CONNECTION_PARAMETERS = pika.ConnectionParameters('messager', port=5672, retry_delay=5, connection_attempts=10)
 MESSAGE_PROPERTIES = pika.BasicProperties(delivery_mode=2, content_type='text/plain')
 QUEUE_NAME = 'stories'
 
@@ -83,6 +83,7 @@ def main():
         # then shuffling them looks much less like a bot.
         links = []
         for name, job in work.items():
+            LOGGER.info("Getting links for %s", name, extra=WORKER_INFO)
             links += [(name, link) for link in get_links(BROWSER, job['url'], job['link_regex'])]
 
         random.shuffle(links)
