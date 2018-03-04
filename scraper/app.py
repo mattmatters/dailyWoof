@@ -5,6 +5,7 @@ Scrape news sites and recieve trending names, nouns, and adjectives.
 """
 import random
 import json
+import logging
 from time import sleep
 
 import pika
@@ -14,6 +15,12 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from scraper import get_story
 from scraper.scraper import get_links
 from scraper.sites import sites
+
+# Logging
+WORKER_INFO = {'clientip': '298', 'user': 'crawler'}
+FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
+logging.basicConfig(format=FORMAT)
+LOGGER = logging.getLogger('nlp_worker')
 
 # Config
 CONNECTION_PARAMETERS = pika.ConnectionParameters('messager', retry_delay=5, connection_attempts=5)
@@ -86,9 +93,10 @@ def main():
                 # Just in case
                 sleep(random.randint(1, 8))
                 try:
-                    print(link)
+                    LOGGER.info("Scraping %s", link, extra=WORKER_INFO)
                     story = get_story(BROWSER, link[1], work[link[0]]['story_xpath'])
                 except Exception:
+                    LOGGER.error("Unsuccessfully got %s", link, extra=WORKER_INFO)
                     continue
 
                 # Quick filtering to avoid invalid stories

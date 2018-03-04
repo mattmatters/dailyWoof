@@ -5,9 +5,17 @@ Receives scraped news and identifies common nouns, adjectives, and proper nouns
 """
 import re
 import json
+import logging
 from time import sleep
 import pika
 from natlang.nlp import process_txt
+
+# Set up logging
+WORKER_INFO = {'clientip': '298', 'user': 'nlp'}
+FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
+logging.basicConfig(format=FORMAT)
+LOGGER = logging.getLogger('nlp_worker')
+
 
 QUEUE_NAME = 'text'
 NEXT_QUEUE_NAME = 'images'
@@ -28,14 +36,15 @@ def extract_name(url):
 def callback(ch, method, properties, body):
     """RabbitMQ callback"""
     body = json.loads(body.decode('utf-8'))
+    LOGGER.info('Processing: %s', body['url'], extra=WORKER_INFO)
+    body = append_nlp(body)
 
     ch.basic_publish(exchange='',
                      routing_key=NEXT_QUEUE_NAME,
-                     body=json.dumps(append_nlp(body)))
+                     body=json.dumps(body))
 
 def main():
     """Subscribe to queue and story processed stories"""
-
     # Create a queue and bind it to the stories exchange
     CHANNEL.exchange_declare(exchange='stories', exchange_type='fanout')
     CHANNEL.queue_declare(queue=NEXT_QUEUE_NAME)
