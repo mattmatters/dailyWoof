@@ -1,4 +1,9 @@
 version: "3.5"
+volumes:
+  web-stuff:
+networks:
+  net:
+  scrape:
 services:
   messager:
     image: rabbitmq:3.7.2
@@ -22,7 +27,6 @@ services:
     networks:
       net:
     volumes:
-      - redis-db:/data
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     deploy:
       replicas: 1
@@ -126,9 +130,3 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
-volumes:
-  web-stuff:
-  redis-db:
-networks:
-  net:
-  scrape:
