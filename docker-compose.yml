@@ -11,7 +11,7 @@ services:
     networks:
       net:
   phantomjs:
-    image: superpolkadance/phantomjs:1.0
+    image: wernight/phantomjs:latest
     command: phantomjs --webdriver=8910
     networks:
       scrape:
