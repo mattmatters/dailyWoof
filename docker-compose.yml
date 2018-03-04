@@ -1,12 +1,10 @@
-version: "3.1"
+version: "3.5"
 services:
   messager:
     image: rabbitmq:3.7.2
     hostname: my-rabbit
     networks:
       net:
-    logging:
-      driver: "none"
   phantomjs:
     image: superpolkadance/phantomjs:1.0
     command: phantomjs --webdriver=8910
@@ -26,8 +24,6 @@ services:
     volumes:
       - redis-db:/data
       - ./redis.conf:/usr/local/etc/redis/redis.conf
-    logging:
-      driver: "none"
     deploy:
       replicas: 1
       restart_policy:
@@ -106,6 +102,9 @@ services:
       - web-stuff:/go/src/app/dist
     environment:
       - BUILD=$BUILD
+    deploy:
+      restart_policy:
+        condition: none
   scraper:
     image: superpolkadance/dailywoofscraper
     build: scraper
