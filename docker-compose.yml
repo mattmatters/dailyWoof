@@ -94,17 +94,6 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
-  frontend:
-    image: superpolkadance/dailywooffrontend
-    build: frontend
-    command: npm run build
-    volumes:
-      - web-stuff:/go/src/app/dist
-    environment:
-      - BUILD=$BUILD
-    deploy:
-      restart_policy:
-        condition: none
   scraper:
     image: superpolkadance/dailywoofscraper
     build: scraper
