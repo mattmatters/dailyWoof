@@ -26,8 +26,6 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     networks:
       net:
-    volumes:
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
     deploy:
       replicas: 1
       restart_policy:
