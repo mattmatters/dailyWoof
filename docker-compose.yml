@@ -23,7 +23,7 @@ services:
         condition: on-failure
   redis:
     image: redis
-    command: redis-server /usr/local/etc/redis/redis.conf
+    command: redis-server
     networks:
       net:
     deploy:
