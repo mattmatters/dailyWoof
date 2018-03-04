@@ -12,8 +12,7 @@ import pika
 from redis import Redis
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from scraper import get_story
-from scraper.scraper import get_links
+from scraper import get_story, get_links
 from scraper.sites import sites
 
 # Logging
@@ -29,8 +28,17 @@ QUEUE_NAME = 'stories'
 
 # Basic enivronment configuration
 REDIS = Redis(host='redis', port=6379)
-BROWSER = webdriver.Remote(command_executor='http://phantomjs:8910/', desired_capabilities=DesiredCapabilities.PHANTOMJS)
 
+print("BEGIN")
+
+def connect_browser():
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1200x600')
+
+    browser = webdriver.Chrome(chrome_options=options)
+    browser.implicitly_wait(2)
+    return browser
 
 def publish_story(channel, story):
     has_published = False
@@ -54,6 +62,9 @@ def publish_story(channel, story):
                 raise Exception('Maximum amount of retries reached')
 
 def main():
+    # Connect to browser
+    browser = connect_browser()
+
     # Connect to RabbitMQ
     connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
     channel = connection.channel()
@@ -77,14 +88,23 @@ def main():
     }
 
     while True:
-        sleep(30)
+#        sleep(30)
 
         # We want to not look like a bot, I found that initially get all the links to possible scrape
         # then shuffling them looks much less like a bot.
         links = []
         for name, job in work.items():
+            new_links = []
             LOGGER.info("Getting links for %s", name, extra=WORKER_INFO)
-            links += [(name, link) for link in get_links(BROWSER, job['url'], job['link_regex'])]
+            print(name)
+            try:
+                new_links = get_links(browser, job['url'], job['link_regex'])
+            except Exception:
+                # Browser sessions get a little funky, in this case refresh the connection
+                browser = connect_browser()
+                new_links = get_links(browser, job['url'], job['link_regex'])
+
+            links += [(name, link) for link in new_links]
 
         random.shuffle(links)
 
@@ -93,9 +113,10 @@ def main():
             if not REDIS.exists(link):
                 # Just in case
                 sleep(random.randint(1, 8))
+
                 try:
                     LOGGER.info("Scraping %s", link, extra=WORKER_INFO)
-                    story = get_story(BROWSER, link[1], work[link[0]]['story_xpath'])
+                    story = get_story(browser, link[1], work[link[0]]['story_xpath'])
                 except Exception:
                     LOGGER.error("Unsuccessfully got %s", link, extra=WORKER_INFO)
                     continue
@@ -114,5 +135,4 @@ def main():
 
 
 if __name__ == '__main__':
-    BROWSER.implicitly_wait(2)
     main()

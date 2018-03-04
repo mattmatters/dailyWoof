@@ -14,10 +14,7 @@ DEFAULT_IMAGE_URL = ''
 
 def get_links(browser, url, regex):
     """Get all front page news links"""
-    try:
-        browser.get(url)
-    except Exception:
-        return []
+    browser.get(url)
 
     tags = browser.find_elements_by_xpath("//a[@href]")
     links = []

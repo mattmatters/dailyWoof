@@ -3,24 +3,12 @@ volumes:
   web-stuff:
 networks:
   net:
-  scrape:
 services:
   messager:
     image: rabbitmq:3.7.2
     hostname: my-rabbit
     networks:
       net:
-  phantomjs:
-    image: wernight/phantomjs:latest
-    command: phantomjs --webdriver=8910
-    networks:
-      scrape:
-        aliases:
-          - phantomjs
-          - browser
-    deploy:
-      restart_policy:
-        condition: on-failure
   redis:
     image: redis
     command: redis-server
@@ -109,16 +97,14 @@ services:
     image: superpolkadance/dailywoofscraper
     build: scraper
     command: python app.py
+    cap_add:
+      - SYS_ADMIN
     depends_on:
-      - phantomjs
       - messager
     networks:
       net:
         aliases:
           - redis
-      scrape:
-        aliases:
-          - browser
     deploy:
       replicas: 1
       restart_policy:
