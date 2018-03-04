@@ -115,6 +115,7 @@ services:
     command: python app.py
     depends_on:
       - phantomjs
+      - messager
     networks:
       net:
         aliases:
