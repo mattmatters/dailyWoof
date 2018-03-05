@@ -1,0 +1,123 @@
+{
+  "people": {
+    "dmx": {
+      "name": ["DMX", "Dominic"],
+      "nouns": [
+        ["rapper", "rappers"],
+        ["dog breeder", "dog breeders"],
+        ["jail", "jail"],
+        ["misdemeanor", "misdemeanors"],
+        ["dog fight", "dog fights"],
+        ["coke", "coke"],
+        ["druuuuuugs", "drrrrrrrruuugs"]
+      ],
+      "adjectives": [
+        "illegal"
+      ],
+      "image": [
+        "dmx.jpg"
+      ]
+    },
+    "harvey": {
+      "name": ["Steve", "Harvey"],
+      "nouns": [
+        ["teeth", "teeth"],
+        ["price", "prices"],
+        ["family feud", "family feuds"],
+        ["mustache", "mustaches"],
+        ["wrong award", "wrong awards"],
+        ["bald person", "bald people"]
+      ],
+      "adjectives": [
+        "shiny",
+        "right",
+        "bald"
+      ],
+      "image": [
+        "steve.jpg"
+      ]
+    },
+    "zuckerberg": {
+      "name": ["Mark", "Zuckerberg"],
+      "nouns": [
+        ["robot", "robots"],
+        ["alien", "aliens"],
+        ["spy", "spies"],
+        ["lizard person", "lizard people"]
+      ],
+      "adjectives": [
+        "greesy",
+        "sneaky"
+      ],
+      "image": [
+        "zuckerberg.jpg"
+      ]
+    },
+    "cage": {
+      "name": ["Nick", "Cage"],
+      "nouns": [
+        ["hair", "hair"],
+        ["debt", "debts"]
+      ],
+      "adjectives": [
+        "elongated"
+      ],
+      "image": [
+        "cage_1.jpg",
+        "cage_2.jpg",
+        "cage_3.jpg"
+      ]
+    },
+    "stewart": {
+      "name": ["Martha", "Stewart"],
+      "nouns": [
+        ["jail", "jail"],
+        ["tax fraud", "tax fraud"],
+        ["soiree", "soirees"],
+        ["cook", "cooks"],
+        ["fake Oprah", "fake Oprahs"],
+        ["celebrity", "celebrities"]
+      ],
+      "adjectives": [
+        "fraudulent",
+        "spooky"
+      ],
+      "image": [
+        "stewart.jpg"
+      ]
+    },
+    "cannon": {
+      "name": ["Nick", "Cannon"],
+      "nouns": [
+        ["almond", "almonds"],
+        ["rapper", "rapper"],
+        ["career", "careers"]
+      ],
+      "adjectives": [
+        "forgettable",
+        "not funny"
+      ],
+      "image": [
+        "cannon.jpg"
+      ]
+    },
+    "bynes": {
+      "name": ["Amanda", "Bynes"],
+      "nouns": [
+        ["coke", "coke"],
+        ["drugs", "drugs"],
+        ["demon", "demons"],
+        ["Amanda Amanda Amanda Show", "Amanda Amanda Amanda Shows"],
+        ["show", "shows"]
+      ],
+      "adjectives": [
+        "drugged out",
+        "all that",
+        "so crazy"
+      ],
+      "image": [
+        "bynes.jpg"
+      ]
+    }
+  }
+}
