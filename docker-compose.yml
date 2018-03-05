@@ -101,8 +101,6 @@ services:
       - messager
     networks:
       net:
-        aliases:
-          - redis
     deploy:
       replicas: 1
       restart_policy:
