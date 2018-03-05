@@ -12,7 +12,6 @@ import pika
 from redis import Redis
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from scraper import get_story, get_links
 from scraper.sites import sites
 
@@ -37,12 +36,6 @@ def connect_browser():
     options = Options()
     options.add_argument("--headless")
     browser = webdriver.Firefox(firefox_options=options, executable_path="/usr/bin/geckodriver")
-    # options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
-    # options.add_argument('window-size=1200x600')
-
-    # browser = webdriver.Chrome(chrome_options=options)
-    # browser.implicitly_wait(2)
     return browser
 
 def publish_story(channel, story):
@@ -78,7 +71,7 @@ def main():
     # Pick any of the predefined sites or roll your own
     work = {
         'bbc': sites['bbc'],
-        'usa': sites['usa'],
+        # 'usa': sites['usa'],
         'cnn': sites['cnn'],
         'fox': sites['fox'],
         'nbc': sites['nbc'],
@@ -87,14 +80,13 @@ def main():
         'nola': sites['nola'],
         'metro': sites['metro'],
         'verge': sites['verge'],
-        'eOnline': sites['eOnline'],
+        # 'eOnline': sites['eOnline'],
         'guardian': sites['guardian'],
-        'la_times': sites['la_times'],
+        # 'la_times': sites['la_times'],
     }
 
     while True:
-#        sleep(30)
-
+        # sleep(30)
         # We want to not look like a bot, I found that initially get all the links to possible scrape
         # then shuffling them looks much less like a bot.
         links = []
@@ -106,8 +98,8 @@ def main():
                 new_links = get_links(browser, job['url'], job['link_regex'])
             except Exception:
                 # Browser sessions get a little funky, in this case refresh the connection
+                browser.quit()
                 browser = connect_browser()
-                new_links = get_links(browser, job['url'], job['link_regex'])
 
             links += [(name, link) for link in new_links]
 
@@ -118,12 +110,13 @@ def main():
             if not REDIS.exists(link):
                 # Just in case
                 sleep(random.randint(1, 8))
-
+                print(link)
                 try:
                     LOGGER.info("Scraping %s", link, extra=WORKER_INFO)
                     story = get_story(browser, link[1], work[link[0]]['story_xpath'])
-                except Exception:
+                except Exception as e:
                     LOGGER.error("Unsuccessfully got %s", link, extra=WORKER_INFO)
+                    print(e)
                     continue
 
                 # Quick filtering to avoid invalid stories
