@@ -1,13 +1,12 @@
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.firefox.options import Options
 from scraper import scraper, get_story
 from scraper.sites import sites
 
-browser = webdriver.Remote(
-    command_executor='http://browser:8910',
-    desired_capabilities=DesiredCapabilities.CHROME)
 
-browser.implicitly_wait(10)
+options = Options()
+options.add_argument("--headless")
+browser = webdriver.Firefox(firefox_options=options, executable_path="/usr/bin/geckodriver")
 
 # Tests that our regex works
 def test_cnn_regex():
