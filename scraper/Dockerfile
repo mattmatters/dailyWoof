@@ -22,7 +22,7 @@ RUN pip3 install --upgrade pip
 
 ## Geckodriver
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-linux64.tar.gz \
-        && sh -c 'tar -x geckodriver -zf geckodriver-v0.16.1-linux64.tar.gz -O > /usr/bin/geckodriver' \
+        && tar -x geckodriver -zf geckodriver-v0.16.1-linux64.tar.gz -O > /usr/bin/geckodriver \
         && chmod +x /usr/bin/geckodriver
 
 # # Install runtime dependencies
