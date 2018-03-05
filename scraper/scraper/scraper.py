@@ -3,7 +3,7 @@ Main library functions.
 Give it a valid Selenium Driver connected to a browser as the browser argument.
 """
 from re import search
-
+from time import sleep
 # Selenium and automating a real web browser on the web is a bit finicky
 # So a lot of the try catch statements are protecting errors
 
@@ -14,7 +14,7 @@ DEFAULT_IMAGE_URL = ''
 def get_links(browser, url, regex):
     """Get all front page news links"""
     browser.get(url)
-
+    sleep(2)
     tags = browser.find_elements_by_xpath("//a[@href]")
     links = []
 
@@ -51,7 +51,7 @@ def get_story(browser, story_url, xpath):
     function wrap itself in a try catch block.
     """
     browser.get(story_url)
-    browser.implicitly_wait(2)
+    sleep(10)
     details = get_details(browser.find_element_by_css_selector('head'))
     story = "\n".join([x.text for x in browser.find_elements_by_xpath(xpath) if len(x.text) > 0])
     return {
