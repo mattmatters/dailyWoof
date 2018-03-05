@@ -99,6 +99,7 @@ services:
     command: python3.6 app.py
     depends_on:
       - messager
+      - redis
     networks:
       net:
     deploy:
