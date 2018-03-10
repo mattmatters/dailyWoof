@@ -98,7 +98,6 @@ def main():
                 new_links = get_links(browser, job['url'], job['link_regex'])
             except Exception:
                 # Browser sessions get a little funky, in this case refresh the connection
-                browser.quit()
                 browser = connect_browser()
 
             links += [(name, link) for link in new_links]
@@ -116,6 +115,7 @@ def main():
                     story = get_story(browser, link[1], work[link[0]]['story_xpath'])
                 except Exception as e:
                     LOGGER.error("Unsuccessfully got %s", link, extra=WORKER_INFO)
+                    browser = connect_browser()
                     print(e)
                     continue
 
