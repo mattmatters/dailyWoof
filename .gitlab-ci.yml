@@ -22,7 +22,6 @@ before_script:
   - docker version
   - docker-compose version
   - docker info
-  - docker login -u "$HUB_USER" -p "HUB_PASSWORD"
 
 build:
   stage: build
@@ -57,12 +56,12 @@ release_front_end:
   only:
     - master
 
-deploy_containers:
-  stage: deploy
-  script:
-    - docker-compose push
-  only:
-    - master
+# deploy_containers:
+#   stage: deploy
+#   script:
+#     - docker-compose push
+#   only:
+#     - master
 
 deploy_front_end:
   stage: deploy
