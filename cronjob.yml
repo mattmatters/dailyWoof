@@ -1,0 +1,27 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: scrape
+spec:
+  schedule: "0 0 0/16 ? * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: natlang
+            image: superpolkadance/dailywoofnlp
+            args:
+              - python
+              - app.py
+          - name: scraper
+            image: superpolkadance/dailywoofscraper
+            args:
+              - python
+              - app.py
+          - name: images
+            image: superpolkadance/dailywoofscraper
+            args:
+              - python3.6
+              - app.py
+          restartPolicy: OnFailure
