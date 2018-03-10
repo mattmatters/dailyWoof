@@ -21,9 +21,9 @@ with open('./config/config.json') as data_file:
 
 # RabbitMQ
 QUEUE_NAME = 'images'
-CONNECTION_PARAMETERS = pika.ConnectionParameters('messager', retry_delay=5, connection_attempts=5)
+CONNECTION_PARAMETERS = pika.ConnectionParameters('rabbitmq-service', retry_delay=5, connection_attempts=5)
 
-REDIS = Redis(host='redis', port=6379)
+REDIS = Redis(host='redis-service', port=6379)
 
 # Face Detector Models
 FACE_DETECTOR = dlib.get_frontal_face_detector()

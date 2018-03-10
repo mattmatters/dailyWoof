@@ -6,11 +6,10 @@ import (
 	"github.com/go-redis/redis"
 	"net/http"
 	"time"
+	"os"
 )
 
 func main() {
-	// Wait for other processes to finish before starting
-	time.Sleep(time.Duration(40 * time.Second))
 
 	// Initialize app
 	r := gin.Default()
@@ -19,13 +18,19 @@ func main() {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	// Static Files to serve
-	r.Static("/static", "./dist/static")
-	r.LoadHTMLFiles("dist/index.html")
+
+	if os.Getenv("BUILD") != "PROD" {
+		// Wait for other processes to finish before starting
+		time.Sleep(time.Duration(40 * time.Second))
+
+		// Static Files to serve
+		r.Static("/static", "./dist/static")
+		r.LoadHTMLFiles("dist/index.html")
+	}
 
 	// Redis Client
 	client := redis.NewClient(&redis.Options{
-		Addr:     "redis:6379",
+		Addr:     "redis-service:6379",
 		Password: "",
 		DB:       0,
 	})

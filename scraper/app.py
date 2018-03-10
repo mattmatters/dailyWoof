@@ -23,12 +23,12 @@ logging.basicConfig(format=FORMAT)
 LOGGER = logging.getLogger('nlp_worker')
 
 # Config
-CONNECTION_PARAMETERS = pika.ConnectionParameters('messager', port=5672, retry_delay=5, connection_attempts=10)
+CONNECTION_PARAMETERS = pika.ConnectionParameters('rabbitmq-service', port=5672, retry_delay=5, connection_attempts=10)
 MESSAGE_PROPERTIES = pika.BasicProperties(delivery_mode=2, content_type='text/plain')
 QUEUE_NAME = 'stories'
 
 # Basic enivronment configuration
-REDIS = Redis(host='redis', port=6379)
+REDIS = Redis(host='redis-service', port=6379)
 
 print("BEGIN")
 
