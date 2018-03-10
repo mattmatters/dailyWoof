@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: scrape
 spec:
-  schedule: "0 0 0/16 ? * * *"
+  schedule: "@daily"
   jobTemplate:
     spec:
       template:
@@ -12,16 +12,33 @@ spec:
           - name: natlang
             image: superpolkadance/dailywoofnlp
             args:
+              - timeout
+              - 60m
               - python
               - app.py
           - name: scraper
             image: superpolkadance/dailywoofscraper
             args:
+              - timeout
+              - 60m
               - python
               - app.py
           - name: images
-            image: superpolkadance/dailywoofscraper
+            image: superpolkadance/dailywoofimages
             args:
+              - timeout
+              - 60m
               - python3.6
               - app.py
+            env:
+              - name: AWS_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: aws-creds
+                    key: id
+              - name: AWS_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: aws-creds
+                    key: key
           restartPolicy: OnFailure
