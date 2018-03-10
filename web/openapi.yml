@@ -1,0 +1,20 @@
+swagger: "2.0"
+info:
+  title: "Daily Woof API"
+  description: ""
+  version: "1.0.0"
+host: "echo-api.endpoints.dailywoof-197400.cloud.goog"
+schemes:
+  - "https"
+paths:
+  "/stories":
+    get:
+      description: "Get random selection of generated stories"
+      operationId: "stories"
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The IATA code is invalid or missing."
