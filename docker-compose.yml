@@ -14,10 +14,6 @@ services:
     command: redis-server
     networks:
       net:
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
   web:
     image: superpolkadance/dailywoofweb
     build: web
@@ -32,17 +28,8 @@ services:
       - redis
     environment:
       - PORT=8080
-      - BUILD=$BUILD
-      - GIN_MODE=$GIN_MODE
     volumes:
       - web-stuff:/go/src/app/dist
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-      update_config:
-        parallelism: 1
-        delay: 10s
   natlang:
     image: superpolkadance/dailywoofnlp
     build: natlang
@@ -54,13 +41,6 @@ services:
       net:
         aliases:
           - redis
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-      update_config:
-        parallelism: 1
-        delay: 10s
   images:
     image: superpolkadance/dailywoofimages
     build: images
@@ -75,13 +55,6 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-      update_config:
-        parallelism: 1
-        delay: 10s
   frontend:
     image: superpolkadance/dailywooffrontend
     build: frontend
@@ -90,9 +63,6 @@ services:
       - web-stuff:/go/src/app/dist
     environment:
       - BUILD=$BUILD
-    deploy:
-      restart_policy:
-        condition: none
   scraper:
     image: superpolkadance/dailywoofscraper
     build: scraper
@@ -102,10 +72,3 @@ services:
       - redis
     networks:
       net:
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-      update_config:
-        parallelism: 1
-        delay: 10s
