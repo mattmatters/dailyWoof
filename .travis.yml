@@ -1,5 +1,8 @@
 sudo: required
 
+cache:
+  apt: true
+
 before_install:
   - sudo apt-get update
   - sudo apt-get install python-pip python-dev build-essential
@@ -8,7 +11,7 @@ before_install:
   - pip install docker-compose
 
 script:
-  - sh test.sh
+  - bash test.sh
 
 services:
   - docker
