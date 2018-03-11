@@ -4,6 +4,7 @@
 import re
 import json
 import random
+import time
 from io import BytesIO
 
 from redis import Redis
@@ -15,13 +16,16 @@ import cv2
 from skimage import io
 from faceitize import replace_faces
 
+START_TIME = time.time()
 
 with open('./config/config.json') as data_file:
     CONFIG = json.load(data_file)['people']
 
 # RabbitMQ
 QUEUE_NAME = 'images'
-CONNECTION_PARAMETERS = pika.ConnectionParameters('rabbitmq-service', retry_delay=5, connection_attempts=5)
+CONNECTION_PARAMETERS = pika.ConnectionParameters('rabbitmq-service',
+                                                  retry_delay=5,
+                                                  connection_attempts=5)
 
 REDIS = Redis(host='redis-service', port=6379)
 
@@ -123,6 +127,9 @@ def callback(ch, method, properties, body):
     body['image'] = S3_BASEPATH + name
     body['tag'] = key
     set_story(REDIS, body)
+
+    if time.time() - START_TIME > 3600:
+        exit()
 
 if __name__ == '__main__':
     # Load our static image first

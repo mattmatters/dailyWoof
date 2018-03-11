@@ -6,7 +6,7 @@ Scrape news sites and recieve trending names, nouns, and adjectives.
 import random
 import json
 import logging
-from time import sleep
+import time
 
 import pika
 from redis import Redis
@@ -23,12 +23,14 @@ logging.basicConfig(format=FORMAT)
 LOGGER = logging.getLogger('nlp_worker')
 
 # Config
-CONNECTION_PARAMETERS = pika.ConnectionParameters('rabbitmq-service', port=5672, retry_delay=5, connection_attempts=10)
+CONNECTION_PARAMETERS = pika.ConnectionParameters('rabbitmq-service', port=5672, retry_delay=5, connection_attempts=20)
 MESSAGE_PROPERTIES = pika.BasicProperties(delivery_mode=2, content_type='text/plain')
 QUEUE_NAME = 'stories'
 
 # Basic enivronment configuration
 REDIS = Redis(host='redis-service', port=6379)
+
+START_TIME = time.time()
 
 print("BEGIN")
 
@@ -54,7 +56,7 @@ def publish_story(channel, story):
         except Exception:
             has_published = False
             retries += 1
-            sleep(5)
+            time.sleep(5)
             # Refresh connection
             if retries == 5:
                 raise Exception('Maximum amount of retries reached')
@@ -71,7 +73,6 @@ def main():
     # Pick any of the predefined sites or roll your own
     work = {
         'bbc': sites['bbc'],
-        # 'usa': sites['usa'],
         'cnn': sites['cnn'],
         'fox': sites['fox'],
         'nbc': sites['nbc'],
@@ -80,13 +81,10 @@ def main():
         'nola': sites['nola'],
         'metro': sites['metro'],
         'verge': sites['verge'],
-        # 'eOnline': sites['eOnline'],
         'guardian': sites['guardian'],
-        # 'la_times': sites['la_times'],
     }
 
     while True:
-        # sleep(30)
         # We want to not look like a bot, I found that initially get all the links to possible scrape
         # then shuffling them looks much less like a bot.
         links = []
@@ -108,7 +106,7 @@ def main():
             # Avoid doing unnessary duplicate work
             if not REDIS.exists(link):
                 # Just in case
-                sleep(random.randint(1, 8))
+                time.sleep(random.randint(1, 8))
                 print(link)
                 try:
                     LOGGER.info("Scraping %s", link, extra=WORKER_INFO)
@@ -131,6 +129,8 @@ def main():
                         # If it doesn't succeed this time, it will crash the application
                         publish_story(channel, story)
 
+                if time.time() - START_TIME > 3600:
+                    return
 
 if __name__ == '__main__':
     main()

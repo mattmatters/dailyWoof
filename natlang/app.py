@@ -6,7 +6,7 @@ Receives scraped news and identifies common nouns, adjectives, and proper nouns
 import re
 import json
 import logging
-from time import sleep
+import time
 import pika
 from natlang.nlp import process_txt
 
@@ -16,11 +16,15 @@ FORMAT = '%(asctime)-15s %(message)s'
 logging.basicConfig(format=FORMAT)
 LOGGER = logging.getLogger('nlp_worker')
 
-
 QUEUE_NAME = 'text'
 NEXT_QUEUE_NAME = 'images'
-CONNECTION = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq-service', retry_delay=5, connection_attempts=5))
+CONNECTION_PARAMETERS = pika.ConnectionParameters(
+    'rabbitmq-service', retry_delay=5, connection_attempts=20)
+CONNECTION = pika.BlockingConnection(CONNECTION_PARAMETERS)
 CHANNEL = CONNECTION.channel()
+
+START_TIME = time.time()
+
 
 def append_nlp(result):
     """Runs the nlp pipeline and adds to result"""
@@ -29,9 +33,11 @@ def append_nlp(result):
 
     return {**result, **process_txt(combined_txt)}
 
+
 def extract_name(url):
     """Takes the a url and exracts the images name"""
     return re.search(r"[^\/]*\.(png|jpg|jpeg)", url)
+
 
 def callback(ch, method, properties, body):
     """RabbitMQ callback"""
@@ -39,9 +45,13 @@ def callback(ch, method, properties, body):
     LOGGER.info('Processing: %s', body['url'], extra=WORKER_INFO)
     body = append_nlp(body)
 
-    ch.basic_publish(exchange='',
-                     routing_key=NEXT_QUEUE_NAME,
-                     body=json.dumps(body))
+    ch.basic_publish(
+        exchange='', routing_key=NEXT_QUEUE_NAME, body=json.dumps(body))
+
+    # Should sub this out with a more graceful solution
+    if time.time() - START_TIME > 3600:
+        exit()
+
 
 def main():
     """Subscribe to queue and story processed stories"""
@@ -58,5 +68,4 @@ def main():
 
 
 if __name__ == '__main__':
-    sleep(10)
     main()
