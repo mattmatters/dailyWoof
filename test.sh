@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Unit tests
 docker-compose build
 docker-compose run scraper python setup.py lint
