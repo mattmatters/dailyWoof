@@ -19,7 +19,7 @@ LOGGER = logging.getLogger('nlp_worker')
 
 QUEUE_NAME = 'text'
 NEXT_QUEUE_NAME = 'images'
-CONNECTION = pika.BlockingConnection(pika.ConnectionParameters('messager', retry_delay=5, connection_attempts=5))
+CONNECTION = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq-service', retry_delay=5, connection_attempts=5))
 CHANNEL = CONNECTION.channel()
 
 def append_nlp(result):

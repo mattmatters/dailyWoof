@@ -1,0 +1,49 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: scrape
+spec:
+  schedule: "@daily"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          tolerations:
+            - key: cpu
+              operator: Equal
+              value: power
+              effect: NoSchedule
+          containers:
+            - name: natlang
+              image: superpolkadance/dailywoofnlp:latest
+              args:
+                - timeout
+                - 60m
+                - python
+                - app.py
+            - name: scraper
+              image: superpolkadance/dailywoofscraper:latest
+              args:
+                - timeout
+                - 60m
+                - python
+                - app.py
+            - name: images
+              image: superpolkadance/dailywoofimages:latest
+              args:
+                - timeout
+                - 60m
+                - python3.6
+                - app.py
+              env:
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-creds
+                      key: id.txt
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-creds
+                      key: key.txt
+          restartPolicy: OnFailure
