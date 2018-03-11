@@ -17,22 +17,16 @@ spec:
             - name: natlang
               image: superpolkadance/dailywoofnlp:latest
               args:
-                - timeout
-                - 60m
                 - python
                 - app.py
             - name: scraper
               image: superpolkadance/dailywoofscraper:latest
               args:
-                - timeout
-                - 60m
                 - python
                 - app.py
             - name: images
               image: superpolkadance/dailywoofimages:latest
               args:
-                - timeout
-                - 60m
                 - python3.6
                 - app.py
               env:
