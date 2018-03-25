@@ -40,6 +40,11 @@ test_scraper:
   script:
     - docker-compose run scraper pytest
 
+test_natlang:
+  stage: test
+  script:
+    - docker-comose run natlang pytest
+
 # release_containers:
 #   stage: release
 #   script:
