@@ -8,6 +8,7 @@ spec:
     spec:
       template:
         spec:
+          # https://cloud.google.com/kubernetes-engine/docs/how-to/node-taints
           tolerations:
             - key: cpu
               operator: Equal
@@ -22,13 +23,19 @@ spec:
             - name: scraper
               image: superpolkadance/dailywoofscraper:latest
               args:
-                - python
+                - python3.6
                 - app.py
+              resources:
+                limits:
+                  cpu: 800m
             - name: images
               image: superpolkadance/dailywoofimages:latest
               args:
-                - python3.6
+                - python
                 - app.py
+              resources:
+                limits:
+                  cpu: 800m
               env:
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:

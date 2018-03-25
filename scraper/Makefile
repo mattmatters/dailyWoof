@@ -1,5 +1,5 @@
 init:
-	python setup.py install
+	python3.6 setup.py install
 test:
-	python setup.py test
+	python3.6 setup.py test
 .PHONY: init test
