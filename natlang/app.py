@@ -45,8 +45,7 @@ def callback(ch, method, properties, body):
     LOGGER.info('Processing: %s', body['url'], extra=WORKER_INFO)
     body = append_nlp(body)
 
-    ch.basic_publish(
-        exchange='', routing_key=NEXT_QUEUE_NAME, body=json.dumps(body))
+    ch.basic_publish(exchange='', routing_key=NEXT_QUEUE_NAME, body=json.dumps(body))
 
     # Should sub this out with a more graceful solution
     if time.time() - START_TIME > 3600:

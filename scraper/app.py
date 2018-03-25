@@ -8,8 +8,8 @@ import json
 import logging
 import time
 
-import pika
 from redis import Redis
+import pika
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from scraper import get_story, get_links
@@ -103,11 +103,11 @@ def main():
         random.shuffle(links)
 
         for link in list(set(links)):
+
             # Avoid doing unnessary duplicate work
             if not REDIS.exists(link):
                 # Just in case
                 time.sleep(random.randint(1, 8))
-                print(link)
                 try:
                     LOGGER.info("Scraping %s", link, extra=WORKER_INFO)
                     story = get_story(browser, link[1], work[link[0]]['story_xpath'])
