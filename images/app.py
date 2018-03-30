@@ -5,6 +5,7 @@ import re
 import json
 import random
 import time
+import multiprocessing
 from io import BytesIO
 
 from redis import Redis
@@ -16,7 +17,6 @@ import cv2
 from skimage import io
 from faceitize import replace_faces
 
-START_TIME = time.time()
 
 with open('./config/config.json') as data_file:
     CONFIG = json.load(data_file)['people']
@@ -58,18 +58,18 @@ def set_story(db_client, info):
     return
 
 
-def main():
-    while True:
-        connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
-        channel = connection.channel()
-        create_queue(channel, QUEUE_NAME)
+def run():
+    connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
+    channel = connection.channel()
+    create_queue(channel, QUEUE_NAME)
 
-        channel.basic_qos(prefetch_count=2)
-        channel.basic_consume(callback, queue='images', no_ack=True)
-        try:
-            channel.start_consuming()
-        except pika.exceptions.ConnectionClosed:
-            continue
+    channel.basic_qos(prefetch_count=2)
+    channel.basic_consume(callback, queue='images', no_ack=True)
+    try:
+        channel.start_consuming()
+    except pika.exceptions.ConnectionClosed:
+        print("Connection closed prematurely")
+
 
 def callback(ch, method, properties, body):
     # Get and load image into memory
@@ -108,6 +108,7 @@ def callback(ch, method, properties, body):
             static_landmarks,
             landmark_predictor=LANDMARK_PREDICTOR)
     except Exception as e:
+        print(e)
         return
 
     url_matches = extract_name(url)
@@ -128,9 +129,11 @@ def callback(ch, method, properties, body):
     body['tag'] = key
     set_story(REDIS, body)
 
-    if time.time() - START_TIME > 3600:
-        exit()
-
 if __name__ == '__main__':
-    # Load our static image first
-    main()
+    proc = multiprocessing.Process(target=run, name="images", )
+    proc.start()
+
+    time.sleep(3600)
+    if proc.is_alive():
+        proc.terminate()
+        proc.join()
