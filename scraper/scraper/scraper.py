@@ -1,11 +1,13 @@
 """
 Main library functions.
 Give it a valid Selenium Driver connected to a browser as the browser argument.
+
+Selenium and automating a real web browser on the web is a bit finicky.
+It prefers to throw errors if elements can not be located So there is a lot of
+the try catch statements mainly to protect against errors.
 """
-from re import search
 from time import sleep
-# Selenium and automating a real web browser on the web is a bit finicky
-# So a lot of the try catch statements are protecting errors
+import re
 
 DEFAULT_TITLE = ''
 DEFAULT_DESC = ''
@@ -14,7 +16,11 @@ DEFAULT_IMAGE_URL = ''
 def get_links(browser, url, regex):
     """Get all front page news links"""
     browser.get(url)
+
+    # @TODO use Selenium's kinda crappy timeout feature
+    # The implicit wait feature fails on headless Firefox
     sleep(2)
+
     tags = browser.find_elements_by_xpath("//a[@href]")
     links = []
 
@@ -24,7 +30,7 @@ def get_links(browser, url, regex):
         except Exception:
             continue
 
-    return [link for link in links if search(regex, link)]
+    return [link for link in links if re.search(regex, link)]
 
 def get_details(header):
     """
@@ -51,9 +57,11 @@ def get_story(browser, story_url, xpath):
     function wrap itself in a try catch block.
     """
     browser.get(story_url)
-    sleep(10)
+    sleep(10) # @TODO use Selenium's kinda crappy timeout feature
+
     details = get_details(browser.find_element_by_css_selector('head'))
     story = "\n".join([x.text for x in browser.find_elements_by_xpath(xpath) if len(x.text) > 0])
+
     return {
         'url': story_url,
         'title': details['title'],
