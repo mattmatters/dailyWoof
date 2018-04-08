@@ -13,8 +13,8 @@ from natlang.nlp import process_txt
 
 START_TIME = time.time()
 
-MQ_HOST = os.environ['MQ_HOST'] or 'rabbitmq-service'
-MQ_PORT = os.environ['MQ_PORT'] or 5672
+MQ_HOST = os.getenv('MQ_HOST', default='rabbitmq-service')
+MQ_PORT = os.getenv('MQ_PORT', default=5672)
 QUEUE_NAME = 'text'
 NEXT_QUEUE_NAME = 'images'
 MESSAGE_PROPERTIES = pika.BasicProperties(content_type='application/json')
