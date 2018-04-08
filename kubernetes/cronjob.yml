@@ -28,23 +28,4 @@ spec:
               resources:
                 limits:
                   cpu: 800m
-            - name: images
-              image: superpolkadance/dailywoofimages:latest
-              args:
-                - python
-                - app.py
-              resources:
-                limits:
-                  cpu: 800m
-              env:
-                - name: AWS_ACCESS_KEY_ID
-                  valueFrom:
-                    secretKeyRef:
-                      name: aws-creds
-                      key: id.txt
-                - name: AWS_SECRET_ACCESS_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: aws-creds
-                      key: key.txt
           restartPolicy: OnFailure
