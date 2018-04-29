@@ -75,49 +75,49 @@ def main():
         'guardian': sites['guardian'],
     }
 
-    while time.time() - start_time < 1800:
+
         # We want to not look like a bot, I found that initially get all the links to possible scrape
         # then shuffling them looks much less like a bot.
-        links = []
-        for name, job in work.items():
-            new_links = []
-            logging.info("Getting links for %s", name)
+    links = []
+    for name, job in work.items():
+        new_links = []
+        logging.info("Getting links for %s", name)
 
-            try:
-                new_links = get_links(browser, job['url'], job['link_regex'])
-            except Exception:
-                # Browser sessions get a little funky, in this case refresh the connection
-                browser = connect_browser()
+        try:
+            new_links = get_links(browser, job['url'], job['link_regex'])
+        except Exception:
+            # Browser sessions get a little funky, in this case refresh the connection
+            browser = connect_browser()
 
-            links += [(name, link) for link in new_links]
+        links += [(name, link) for link in new_links]
 
-        random.shuffle(links)
+    random.shuffle(links)
 
-        for link in list(set(links)):
-            # Avoid doing unnessary duplicate work
-            if db.exists(link):
-                continue
+    for link in list(set(links)):
+        # Avoid doing unnessary duplicate work
+        if db.exists(link):
+            continue
 
-            # Just in case
-            time.sleep(random.randint(1, 8))
+        # Just in case
+        time.sleep(random.randint(1, 8))
 
-            try:
-                logging.info("Scraping %s", link)
-                story = get_story(browser, link[1], work[link[0]]['story_xpath'])
-            except Exception as e:
-                logging.error("Unsuccessfully got %s", link)
-                browser = connect_browser()
-                continue
+        try:
+            logging.info("Scraping %s", link)
+            story = get_story(browser, link[1], work[link[0]]['story_xpath'])
+        except Exception as e:
+            logging.error("Unsuccessfully got %s", link)
+            browser = connect_browser()
+            continue
 
-            # Quick filtering to avoid invalid stories
-            if len(story['story']) == 0:
-                continue
+        # Quick filtering to avoid invalid stories
+        if len(story['story']) == 0:
+            continue
 
-            # Often connections are lost, reconnect in those cases
-            try:
-                publish_story(channel, QUEUE_NAME, story)
-            except Exception:
-                channel = setup_mq(QUEUE_NAME) # Refresh the connection
+        # Often connections are lost, reconnect in those cases
+        try:
+            publish_story(channel, QUEUE_NAME, story)
+        except Exception:
+            channel = setup_mq(QUEUE_NAME) # Refresh the connection
 
 if __name__ == '__main__':
     main()

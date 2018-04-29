@@ -23,9 +23,11 @@ spec:
             - name: scraper
               image: superpolkadance/dailywoofscraper:latest
               args:
+                - timeout
+                - 1800
                 - python3.6
                 - app.py
               resources:
                 limits:
                   cpu: 800m
-          restartPolicy: OnFailure
+          restartPolicy: Never
