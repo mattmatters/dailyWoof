@@ -43,7 +43,7 @@ test_scraper:
 test_natlang:
   stage: test
   script:
-    - docker-comose run natlang pytest
+    - docker-compose run natlang pytest
 
 # release_containers:
 #   stage: release
