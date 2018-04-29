@@ -75,7 +75,7 @@ def main():
         'guardian': sites['guardian'],
     }
 
-    while time.time() - start_time < 3600:
+    while time.time() - start_time < 1800:
         # We want to not look like a bot, I found that initially get all the links to possible scrape
         # then shuffling them looks much less like a bot.
         links = []
