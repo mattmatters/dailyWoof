@@ -31,4 +31,7 @@ spec:
                     secretKeyRef:
                       name: aws-creds
                       key: key.txt
+              resources:
+                limits:
+                  cpu: 800m
           restartPolicy: OnFailure

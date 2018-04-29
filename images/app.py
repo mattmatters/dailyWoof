@@ -132,6 +132,7 @@ def callback(ch, method, properties, body):
 
     # Put everything in redis for use
     body['image'] = S3_BASEPATH + name
+    body['tag'] = key
     print("trying redis")
     REDIS.pipeline().set(body['url'], json.dumps(body)).expire(url, 3600000).execute()
 
