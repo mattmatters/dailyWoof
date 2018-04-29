@@ -25,6 +25,8 @@ RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckod
         && tar -x geckodriver -zf geckodriver-v0.19.1-linux64.tar.gz -O > /usr/bin/geckodriver \
         && chmod +x /usr/bin/geckodriver
 
+RUN rm geckodriver-v0.19.1-linux64.tar.gz
+
 # Intstall this stuff for caching
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
