@@ -33,5 +33,5 @@ spec:
                       key: key.txt
               resources:
                 limits:
-                  cpu: 800m
+                  cpu: 1400m
           restartPolicy: OnFailure
