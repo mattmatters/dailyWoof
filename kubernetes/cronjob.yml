@@ -24,7 +24,7 @@ spec:
               image: superpolkadance/dailywoofscraper:latest
               args:
                 - timeout
-                - 1800
+                - "1800"
                 - python3.6
                 - app.py
               resources:
