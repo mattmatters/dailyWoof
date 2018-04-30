@@ -20,7 +20,8 @@ NEXT_QUEUE_NAME = 'images'
 MESSAGE_PROPERTIES = pika.BasicProperties(content_type='application/json')
 CONNECTION_PARAMETERS = pika.ConnectionParameters(MQ_HOST,
                                                   retry_delay=5,
-                                                  connection_attempts=20)
+                                                  connection_attempts=20,
+                                                  heartbeat=360)
 
 def append_nlp(result):
     """Runs the nlp pipeline and adds to result"""

@@ -27,7 +27,12 @@ REDIS_PORT = os.getenv('REDIS_PORT', default=6379)
 MQ_HOST = os.getenv('MQ_HOST', default='rabbitmq-service')
 MQ_PORT = os.getenv('MQ_PORT', default=5672)
 
-CONNECTION_PARAMETERS = pika.ConnectionParameters(MQ_HOST, port=MQ_PORT, retry_delay=5, connection_attempts=20)
+CONNECTION_PARAMETERS = pika.ConnectionParameters(
+    MQ_HOST,
+    port=MQ_PORT,
+    retry_delay=5,
+    connection_attempts=20,
+    heartbeat=360)
 MESSAGE_PROPERTIES = pika.BasicProperties(delivery_mode=2, content_type='application/json')
 QUEUE_NAME = 'stories'
 logging.basicConfig(format='%(asctime)-15s %(message)s')
