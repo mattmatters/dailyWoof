@@ -18,6 +18,8 @@ spec:
             - name: natlang
               image: superpolkadance/dailywoofnlp:latest
               args:
+                - timeout
+                - "1800"
                 - python
                 - app.py
             - name: scraper
