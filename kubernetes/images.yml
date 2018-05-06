@@ -10,9 +10,9 @@ spec:
         spec:
           # https://cloud.google.com/kubernetes-engine/docs/how-to/node-taints
           tolerations:
-            - key: cpu
+            - key: image
               operator: Equal
-              value: power
+              value: image
               effect: NoSchedule
           containers:
             - name: images
@@ -31,7 +31,4 @@ spec:
                     secretKeyRef:
                       name: aws-creds
                       key: key.txt
-              resources:
-                limits:
-                  cpu: 1400m
-          restartPolicy: OnFailure
+          restartPolicy: Never
