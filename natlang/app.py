@@ -11,8 +11,6 @@ import time
 import pika
 from natlang.nlp import process_txt
 
-START_TIME = time.time()
-
 MQ_HOST = os.getenv('MQ_HOST', default='rabbitmq-service')
 MQ_PORT = os.getenv('MQ_PORT', default=5672)
 QUEUE_NAME = 'text'
@@ -35,7 +33,6 @@ def extract_name(url):
     """Takes the a url and exracts the images name"""
     return re.search(r"[^\/]*\.(png|jpg|jpeg)", url)
 
-
 def callback(ch, method, properties, body):
     """RabbitMQ callback"""
     body = json.loads(body.decode('utf-8'))
@@ -46,10 +43,6 @@ def callback(ch, method, properties, body):
                      routing_key=NEXT_QUEUE_NAME,
                      body=json.dumps(body),
                      properties=MESSAGE_PROPERTIES)
-
-    # Should sub this out with a more graceful solution
-    if time.time() - START_TIME > 3600:
-        exit()
 
 def setup_mq():
     connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
