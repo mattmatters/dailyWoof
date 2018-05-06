@@ -2,7 +2,6 @@
 
 import re
 import json
-import os
 import random
 import time
 import multiprocessing
@@ -16,19 +15,13 @@ import dlib
 import cv2
 from skimage import io
 from faceitize import replace_faces
-
+import config
 
 with open('./config/config.json') as data_file:
     CONFIG = json.load(data_file)['people']
 
-# RabbitMQ
-QUEUE_NAME = 'images'
-CONNECTION_PARAMETERS = pika.ConnectionParameters('rabbitmq-service',
-                                                  retry_delay=5,
-                                                  connection_attempts=5)
-
 # This should probably be somewhere else
-REDIS = Redis(host='redis-service', port=6379)
+REDIS = Redis(host=config.REDIS_HOST, port=6379)
 
 # Face Detector Models
 FACE_DETECTOR = dlib.get_frontal_face_detector()
@@ -57,13 +50,13 @@ def set_story(db_client, info):
 
 def run():
     # Connect
-    connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
+    connection = pika.BlockingConnection(config.CONNECTION_PARAMETERS)
     channel = connection.channel()
 
     # Set up everything to start consuming
-    channel.queue_declare(queue=QUEUE_NAME)
+    channel.queue_declare(queue=config.QUEUE_NAME)
     channel.basic_qos(prefetch_count=2)
-    channel.basic_consume(callback, queue=QUEUE_NAME, no_ack=True)
+    channel.basic_consume(callback, queue=config.QUEUE_NAME, no_ack=True)
 
     # We wrap this in a try, this is because pika is prone to missing heartbeats
     try:
@@ -125,15 +118,13 @@ def callback(ch, method, properties, body):
     # Upload image to an s3 bucket
     print("trying bucket")
     try:
-            S3_CLIENT.Bucket(BUCKET_NAME).put_object(Key=name, Body=buffer)
+            S3_CLIENT.Bucket(config.BUCKET_NAME).put_object(Key=name, Body=buffer)
     except Exception as e:
         print("faILED upload")
         print(e)
 
     # Put everything in redis for use
-    body['image'] = S3_BASEPATH + name
-    body['tag'] = key
-    print("trying redis")
+    body['image'] = config.S3_BASEPATH + name
     REDIS.pipeline().set(body['url'], json.dumps(body)).expire(url, 3600000).execute()
 
 if __name__ == '__main__':
