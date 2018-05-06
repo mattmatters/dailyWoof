@@ -3,6 +3,7 @@ kind: ReplicationController
 metadata:
   labels:
     component: redis
+    general: low-power
   name: redis-controller
 spec:
   replicas: 1
@@ -13,10 +14,10 @@ spec:
         component: redis
     spec:
       containers:
-      - image: redis
-        name: redis
-        ports:
-        - containerPort: 6379
-        resources:
-          limits:
-            cpu: 100m
+        - image: redis
+          name: redis
+          ports:
+            - containerPort: 6379
+          resources:
+            limits:
+              cpu: 100m
