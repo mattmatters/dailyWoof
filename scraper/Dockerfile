@@ -21,11 +21,11 @@ RUN apt-get -y update \
 RUN pip3 install --upgrade pip
 
 ## Geckodriver
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz \
-        && tar -x geckodriver -zf geckodriver-v0.19.1-linux64.tar.gz -O > /usr/bin/geckodriver \
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.20.1/geckodriver-v0.20.1-linux64.tar.gz \
+        && tar -x geckodriver -zf geckodriver-v0.20.1-linux64.tar.gz -O > /usr/bin/geckodriver \
         && chmod +x /usr/bin/geckodriver
 
-RUN rm geckodriver-v0.19.1-linux64.tar.gz
+RUN rm geckodriver-v0.20.1-linux64.tar.gz
 
 # Intstall this stuff for caching
 COPY requirements.txt ./
