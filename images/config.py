@@ -11,4 +11,5 @@ S3_BASEPATH = os.getenv('S3_BASEPATH', "http://assets.dailywoof.space/")
 
 CONNECTION_PARAMETERS = pika.ConnectionParameters(MQ_HOST,
                                                   retry_delay=5,
-                                                  connection_attempts=5)
+                                                  connection_attempts=5,
+                                                  heartbeat=360)
