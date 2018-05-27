@@ -1,4 +1,4 @@
-FROM python:3.6.3
+FROM python:3.6.5-alpine
 WORKDIR /usr/src/natlang
 
 # Intstall this stuff for caching
@@ -9,8 +9,9 @@ RUN pip install -r requirements.txt
 COPY setup.py ./
 COPY natlang/ ./natlang/.
 
-COPY Makefile ./
-RUN make init
+RUN pip install --no-cache-dir -r requirements.txt && \
+    python -m textblob.download_corpora && \
+    python setup.py install
 
 # Tests and everything else
 COPY . .

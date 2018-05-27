@@ -1,6 +1,5 @@
 nltk
 textblob
-numpy
 pika
 pytest
 pylint
