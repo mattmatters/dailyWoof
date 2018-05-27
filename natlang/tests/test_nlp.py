@@ -1,4 +1,4 @@
-from scraper import nlp
+from natlang import nlp
 
 txt = nlp.makeTextBlob('cat cat cat dog dog monkey')
 txt = txt.tags
