@@ -52,7 +52,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
       - MQ_HOST=rabbitmq-service
       - MQ_PORT=5672
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis-service
   frontend:
     image: superpolkadance/dailywooffrontend
     build: frontend
