@@ -7,7 +7,6 @@ Scrape news sites and recieve trending names, nouns, and adjectives.
 # Libraries
 import random
 import json
-import logging
 import time
 import os
 
@@ -33,16 +32,17 @@ CONNECTION_PARAMETERS = pika.ConnectionParameters(
     retry_delay=5,
     connection_attempts=20,
     heartbeat=360)
+
 MESSAGE_PROPERTIES = pika.BasicProperties(delivery_mode=2, content_type='application/json')
 QUEUE_NAME = 'stories'
-logging.basicConfig(format='%(asctime)-15s %(message)s')
 
 # Utility functions
 def connect_browser():
+    capabilities = webdriver.DesiredCapabilities().FIREFOX
     options = Options()
     options.add_argument("--headless")
 
-    return webdriver.Firefox(firefox_options=options, executable_path="/usr/bin/geckodriver")
+    return webdriver.Firefox(firefox_options=options, executable_path="/usr/bin/geckodriver", capabilities=capabilities)
 
 def setup_mq(queue):
     connection = pika.BlockingConnection(CONNECTION_PARAMETERS)
@@ -59,11 +59,7 @@ def publish_story(chan, queue, content):
         properties=MESSAGE_PROPERTIES)
 
 def main():
-    start_time = time.time()
-
-    # Connect to browser
     browser = connect_browser()
-    channel = setup_mq(QUEUE_NAME)
     db = Redis(host=REDIS_HOST, port=REDIS_PORT)
 
     # Pick any of the predefined sites or roll your own
@@ -86,18 +82,21 @@ def main():
     links = []
     for name, job in work.items():
         new_links = []
-        logging.info("Getting links for %s", name)
 
         try:
+            print(job['url'])
             new_links = get_links(browser, job['url'], job['link_regex'])
-        except Exception:
+        except Exception as e:
+            print(e)
             # Browser sessions get a little funky, in this case refresh the connection
             browser = connect_browser()
+
 
         links += [(name, link) for link in new_links]
 
     random.shuffle(links)
 
+    channel = setup_mq(QUEUE_NAME)
     for link in list(set(links)):
         # Avoid doing unnessary duplicate work
         if db.exists(link):
@@ -107,10 +106,10 @@ def main():
         time.sleep(random.randint(1, 8))
 
         try:
-            logging.info("Scraping %s", link)
+            print(link)
             story = get_story(browser, link[1], work[link[0]]['story_xpath'])
         except Exception as e:
-            logging.error("Unsuccessfully got %s", link)
+            print(e)
             browser = connect_browser()
             continue
 
