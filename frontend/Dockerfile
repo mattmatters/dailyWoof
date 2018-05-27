@@ -1,4 +1,4 @@
-FROM node:9.2
+FROM node:9.11.1
 
 WORKDIR /go/src/app
 
