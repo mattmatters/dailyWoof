@@ -22,12 +22,20 @@ before_script:
   - docker version
   - docker-compose version
   - docker info
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
 
 build:
   stage: build
   script:
     - docker-compose pull
     - docker-compose build
+
+build_front_end:
+  stage: build
+  script:
+    - cd frontend
+    - "docker build -t registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_JOB_ID ."
+    - docker push registry.gitlab.com/mattmatters/dailywoof
 
 test_front_end:
   stage: test
