@@ -2,7 +2,7 @@
 from nltk import FreqDist, ne_chunk, pos_tag, word_tokenize, sent_tokenize
 from textblob import TextBlob, Word
 from textblob.taggers import NLTKTagger
-
+import numpy
 
 def cmn_nouns(tagged_txt):
     """Convert all the nouns into their singular form and return a list"""
