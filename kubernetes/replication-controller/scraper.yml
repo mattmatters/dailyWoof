@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: scraper-controller
+spec:
+  replicas: 1
+  template:
+    spec:
+      tolerations:
+        - key: power
+          operator: Equal
+          value: power
+          effect: NoSchedule
+      containers:
+        - image: superpolkadance/dailywoofscraper:latest
+          name: scraper
+          args:
+            - python3.6
+            - app.py
