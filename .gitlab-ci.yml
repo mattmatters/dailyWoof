@@ -24,64 +24,64 @@ build_front_end:
   stage: build
   script:
     - cd frontend
-    - docker build -t registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_COMMIT_REF_NAME-$CI_JOB_ID .
-    - docker push registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+    - docker build -t registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_JOB_ID .
+    - docker push registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_JOB_ID
 
 build_natlang:
   stage: build
   script:
     - cd natlang
-    - docker build -t registry.gitlab.com/mattmatters/dailywoof/nlp:$CI_COMMIT_REF_NAME-$CI_JOB_ID .
-    - docker push registry.gitlab.com/mattmatters/dailywoof/nlp:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+    - docker build -t registry.gitlab.com/mattmatters/dailywoof/nlp:$CI_JOB_ID .
+    - docker push registry.gitlab.com/mattmatters/dailywoof/nlp:$CI_JOB_ID
 
 build_api:
   stage: build
   script:
     - cd web
-    - docker build -t registry.gitlab.com/mattmatters/dailywoof/web:$CI_COMMIT_REF_NAME-$CI_JOB_ID .
-    - docker push registry.gitlab.com/mattmatters/dailywoof/web:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+    - docker build -t registry.gitlab.com/mattmatters/dailywoof/web:$CI_JOB_ID .
+    - docker push registry.gitlab.com/mattmatters/dailywoof/web:$CI_JOB_ID
 
 build_scraper:
   stage: build
   script:
     - cd scraper
-    - docker build -t registry.gitlab.com/mattmatters/dailywoof/scraper:$CI_COMMIT_REF_NAME-$CI_JOB_ID .
-    - docker push registry.gitlab.com/mattmatters/dailywoof/scraper:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+    - docker build -t registry.gitlab.com/mattmatters/dailywoof/scraper:$CI_JOB_ID .
+    - docker push registry.gitlab.com/mattmatters/dailywoof/scraper:$CI_JOB_ID
 
 build_image:
   stage: build
   script:
     - cd images
-    - docker build -t registry.gitlab.com/mattmatters/dailywoof/image:$CI_COMMIT_REF_NAME-$CI_JOB_ID .
-    - docker push registry.gitlab.com/mattmatters/dailywoof/image:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+    - docker build -t registry.gitlab.com/mattmatters/dailywoof/image:$CI_JOB_ID .
+    - docker push registry.gitlab.com/mattmatters/dailywoof/image:$CI_JOB_ID
 
 # Test everything
 test_front_end:
   stage: test
   script:
-    - docker pull registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_COMMIT_REF_NAME-$CI_JOB_ID
-    - docker run registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_COMMIT_REF_NAME-$CI_JOB_ID npm run lint
-    - docker run registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_COMMIT_REF_NAME-$CI_JOB_ID npm run test
+    - docker pull registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_JOB_ID
+    - docker run registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_JOB_ID npm run lint
+    - docker run registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_JOB_ID npm run test
 
 test_scraper:
   stage: test
   script:
-    - docker pull registry.gitlab.com/mattmatters/dailywoof/scraper:$CI_COMMIT_REF_NAME-$CI_JOB_ID
-    - docker run registry.gitlab.com/mattmatters/dailywoof/scraper:$CI_COMMIT_REF_NAME-$CI_JOB_ID pytest
+    - docker pull registry.gitlab.com/mattmatters/dailywoof/scraper:$CI_JOB_ID
+    - docker run registry.gitlab.com/mattmatters/dailywoof/scraper:$CI_JOB_ID pytest
 
 test_natlang:
   stage: test
   script:
-    - docker pull registry.gitlab.com/mattmatters/dailywoof/nlp:$CI_COMMIT_REF_NAME-$CI_JOB_ID
-    - docker run registry.gitlab.com/mattmatters/dailywoof/nlp:$CI_COMMIT_REF_NAME-$CI_JOB_ID pytest
+    - docker pull registry.gitlab.com/mattmatters/dailywoof/nlp:$CI_JOB_ID
+    - docker run registry.gitlab.com/mattmatters/dailywoof/nlp:$CI_JOB_ID pytest
 
 # Prepare everything for release
 release_front_end:
   stage: release
   script:
-    - docker pull registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+    - docker pull registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_JOB_ID
     - mkdir ./front_build
-    - BUILD="PROD" docker run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+    - BUILD="PROD" docker run -v "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/front_build:/go/src/app/dist registry.gitlab.com/mattmatters/dailywoof/frontend:$CI_JOB_ID
   only:
     - master
 
