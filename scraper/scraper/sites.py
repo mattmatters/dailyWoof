@@ -10,7 +10,7 @@ The story_xpath is a bit more driver specific, but it's  a css selector to get t
 
 sites = {
     'cnn': {
-        'url': 'https://www.cnn.com',
+        'url': 'https://www.cnn.com/',
         'link_regex': r'https?:\/\/(www.)?cnn.com\/20\d*',
         'story_xpath': "//*[contains(@class, 'zn-body__paragraph')]",
     },
