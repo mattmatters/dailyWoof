@@ -10,26 +10,6 @@ def make_browser():
     return webdriver.Firefox(firefox_options=options, executable_path="/usr/bin/geckodriver", capabilities=capabilities)
 
 # Tests that our regex works
-def test_cnn_regex():
-    browser = make_browser()
-    stories = scraper.get_links(browser, sites['cnn']['url'],
-                                sites['cnn']['link_regex'])
-    assert len(stories) > 0
-
-
-def test_cnn_story():
-    browser = make_browser()
-    story = get_story(
-        browser,
-        'http://www.cnn.com/2017/11/13/politics/george-hw-bush-groping-allegation/index.html',
-        sites['cnn']['story_xpath'])
-    assert len(story['title']) > 0
-    assert len(story['desc']) > 0
-    assert len(story['story']) > 0
-    assert len(story['image']) > 0
-
-
-# Tests that our regex works
 def test_bbc_regex():
     browser = make_browser()
     stories = scraper.get_links(browser, sites['bbc']['url'], sites['bbc']['link_regex'])
