@@ -1,8 +1,21 @@
-<h1 align="center">The Daily Woof</h1>
-<p align="center">
-    <a href="https://gitlab.com/mattmatters/dailyWoof/commits/master"><img alt="pipeline status" src="https://gitlab.com/mattmatters/dailyWoof/badges/master/pipeline.svg" /></a>
-    <a href="https://codeclimate.com/github/mattmatters/dailyWoof/maintainability"><img src="https://api.codeclimate.com/v1/badges/6d419e6fb14f95b76067/maintainability" /></a>
-</p>
+# The Daily Woof
+
+## Archival Notice
+
+I was a junior engineer frustrated with my work situation and made this. It mostly served as a test bed for various stuff that later
+showed up in my career.
+
+I am particularly proud of the face replacement tech which would be expanded on [here](https://github.com/mattmatters/faceitize). I
+thought being one of the earliest people to compile a lot of these libraries to Webassembly would make job offers come swarming in.
+However it mostly was met with _"Neat, we do not feel you are qualified for email styling"_. Strangely enough I ended up getting pinged
+pretty frequently on that lib years later.
+
+This is mostly being left up as an archive of what a junior engineer thought a largescale monorepo looked like in an era where K8s and
+WASM was the fancy new tech.
+
+Enjoy! I think this is still neat for what it was.
+
+## About
 
 Dogs have taken over the news.
 
